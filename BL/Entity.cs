@@ -14,7 +14,7 @@ namespace BL
         public int X
         {
             get => _x;
-            set
+            protected internal set
             {
                 if (value < 0 || value > 6)
                     throw new IndexOutOfRangeException("Coordinate \"X\" must be between 0 and 6.");
@@ -24,7 +24,7 @@ namespace BL
         public int Y
         {
             get => _y;
-            set
+            protected internal set
             {
                 if (value < 0 || value > 6)
                     throw new IndexOutOfRangeException("Coordinate \"Y\" must be between 0 and 6.");
@@ -32,18 +32,18 @@ namespace BL
             }
         }
 
-        public EntityType EntityType { get; set; }
+        public EntityType EntityType { get; protected internal set; }
 
-        public ImageType ImageType { get; set; }
+        public ImageType ImageType { get; protected internal set; }
 
-        public bool IsMovable { get; set; }
+        public bool IsMovable { get; protected internal set; }
 
-        public Entity() 
+        protected internal Entity() 
         {
             IsMovable = false;
         }
 
-        public Entity(int x, int y, EntityType entityType, ImageType pictureType, bool isMovable)
+        protected internal Entity(int x, int y, EntityType entityType, ImageType pictureType, bool isMovable)
         {
             X = x;
             Y = y;
@@ -52,7 +52,7 @@ namespace BL
             this.IsMovable = isMovable;
         }
 
-        public Entity Clone()
+        protected internal Entity Clone()
         {
             return new Entity()
             {

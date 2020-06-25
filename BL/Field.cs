@@ -7,34 +7,25 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class Field
+    public abstract class Field
     {
-        private IDictionary<string, Entity> _entities;
+        protected IDictionary<string, Entity> _entities;
 
-        public Field()
+        protected internal Field()
         {
             //The field consist of 33 cells
             _entities = new Dictionary<string, Entity>(33);
             InitEntities();
         }
 
-        private Field(IDictionary<string, Entity> entities)
+        protected Field(IDictionary<string, Entity> entities)
         {
             _entities = new Dictionary<string, Entity>(entities);
         }
 
-        public Field Clone()
-        {
-            Dictionary<string, Entity> entities = new Dictionary<string, Entity>();
-            foreach (var item in _entities)
-            {
-                entities.Add(item.Key, item.Value.Clone());
-            }
+        protected internal abstract Field Clone();
 
-            return new Field(entities);
-        }
-
-        private void InitEntities()
+        protected void InitEntities()
         {
             for (int y = 0; y < 2; y++)
             {
@@ -107,37 +98,11 @@ namespace BL
             }
         }
 
-        public IDictionary<string, Entity> GetEntities()
+        protected internal IDictionary<string, Entity> GetEntities()
         {
             return _entities;
         }
 
-        public void UpdateCellLockStatus(GamePerson person)
-        {
-            EntityType entityType;
-            if (person == GamePerson.Chicken)
-                entityType = EntityType.Chicken;
-            else
-                entityType = EntityType.Fox;
-
-            foreach (var item in _entities.Values)
-            {
-                if (item.EntityType != entityType)
-                    item.IsMovable = false;
-            }
-
-            foreach (var item in _entities.Values)
-            {
-                if (item.EntityType == entityType)
-                {
-
-                }
-            }
-        }
-
-        private async void FindTheWayAsync()
-        {
-
-        }
+        protected internal abstract void UpdateCellLockStatus(string entityKey);
     }
 }

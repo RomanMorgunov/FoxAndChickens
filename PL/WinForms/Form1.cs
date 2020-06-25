@@ -25,11 +25,11 @@ namespace WinForms
             }
         }
 
-        private GamePerson GamePerson
+        private PlayerPerson PlayerPerson
         {
             get
             {
-                return this.chickenTSMI.Checked ? GamePerson.Chicken : GamePerson.Fox;
+                return this.chickenTSMI.Checked ? PlayerPerson.Chicken : PlayerPerson.Fox;
             }
         }
 
@@ -59,10 +59,7 @@ namespace WinForms
 
         private void NewGame()
         {
-            if (this.GameMode == GameMode.PlayerVsPlayer)
-                _game = new GamePvP();
-            else
-                _game = new GameAI(this.GamePerson, this.AI_Level);
+            _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode);
 
             UpdateFieldOnTheForm();
         }
@@ -110,7 +107,7 @@ namespace WinForms
         {
             foreach (var pair in _game.GetLastEntities())
             {
-                _conformityButtonWithHisIndex[pair.Key].Enabled = pair.Value.IsMovable;
+                _conformityButtonWithHisIndex[pair.Key].Enabled = pair.Value.IsMovable;               
             }
         }
 
@@ -120,8 +117,7 @@ namespace WinForms
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
 
-            _game.Update(button.Tag.ToString());
-            //_game.Update...
+            _game.UpdateEntitiesProperty(button.Tag.ToString());
             UpdateFieldOnTheForm();
         }
 

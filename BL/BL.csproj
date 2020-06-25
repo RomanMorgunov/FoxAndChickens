@@ -44,8 +44,8 @@
     <Compile Include="Field.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="GameAI.cs" />
-    <Compile Include="GamePvP.cs" />
+    <Compile Include="FieldAI.cs" />
+    <Compile Include="FieldPvP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
