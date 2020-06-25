@@ -28,7 +28,7 @@ namespace BL
             return new FieldAI(entities);
         }
 
-        protected internal override void UpdateCellLockStatus(string entityKey)
+        protected internal override void UpdateEntitiesProperty(string entityKey)
         {
             throw new NotImplementedException();
         }

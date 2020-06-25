@@ -47,9 +47,9 @@ namespace BL
             return GetLastEntities().Values.Where(e => e.EntityType == EntityType.Chicken).Count() - 8;
         }
 
-        public void UpdateEntitiesProperty(string entityKey)
+        public void Moving(string entityKey)
         {
-            _fields[_fields.Count - 1].UpdateCellLockStatus(entityKey);
+            _fields[_fields.Count - 1].UpdateEntitiesProperty(entityKey);
         }
     }
 

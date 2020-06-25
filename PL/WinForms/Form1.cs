@@ -117,7 +117,7 @@ namespace WinForms
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
 
-            _game.UpdateEntitiesProperty(button.Tag.ToString());
+            _game.Moving(button.Tag.ToString());
             UpdateFieldOnTheForm();
         }
 

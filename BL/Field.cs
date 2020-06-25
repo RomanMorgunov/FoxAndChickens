@@ -103,6 +103,6 @@ namespace BL
             return _entities;
         }
 
-        protected internal abstract void UpdateCellLockStatus(string entityKey);
+        protected internal abstract void UpdateEntitiesProperty(string entityKey);
     }
 }
