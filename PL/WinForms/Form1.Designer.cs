@@ -80,6 +80,7 @@
             this.cancelSelectedPersonBtn = new System.Windows.Forms.ToolStripButton();
             this.chickensLeftLbl = new System.Windows.Forms.ToolStripLabel();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.countLabel = new System.Windows.Forms.ToolStripLabel();
             this.menuStrip.SuspendLayout();
             this.GameFieldTLP.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -766,7 +767,8 @@
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cancelSelectedPersonBtn,
-            this.chickensLeftLbl});
+            this.chickensLeftLbl,
+            this.countLabel});
             this.toolStrip.Location = new System.Drawing.Point(0, 566);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(676, 25);
@@ -802,6 +804,13 @@
             this.imageList.Images.SetKeyName(3, "chickenDead.png");
             this.imageList.Images.SetKeyName(4, "start_position.png");
             this.imageList.Images.SetKeyName(5, "track.png");
+            // 
+            // countLabel
+            // 
+            this.countLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.countLabel.Name = "countLabel";
+            this.countLabel.Size = new System.Drawing.Size(13, 22);
+            this.countLabel.Text = "0";
             // 
             // GameForm
             // 
@@ -883,6 +892,7 @@
         private System.Windows.Forms.ToolStripButton cancelSelectedPersonBtn;
         private System.Windows.Forms.ToolStripLabel chickensLeftLbl;
         private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.ToolStripLabel countLabel;
     }
 }
 

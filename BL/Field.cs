@@ -12,7 +12,7 @@ namespace BL
         protected IDictionary<string, Entity> _entities;
         protected List<Dictionary<string, Entity>> bestsWays;
 
-        public PlayerPerson LastPerson { get; protected set; }
+        public PlayerPerson LastPerson { get; protected internal set; }
 
         public bool GameOver { get; protected set; }
 
@@ -20,6 +20,7 @@ namespace BL
         {
             //The field consist of 33 cells
             _entities = new Dictionary<string, Entity>(33);
+            bestsWays = new List<Dictionary<string, Entity>>(8);
             GameOver = false;
             InitEntities();
         }
@@ -27,6 +28,8 @@ namespace BL
         protected Field(IDictionary<string, Entity> entities)
         {
             _entities = new Dictionary<string, Entity>(entities);
+            bestsWays = new List<Dictionary<string, Entity>>(8);
+            GameOver = false;
         }
 
         protected internal abstract Field Clone();
@@ -109,6 +112,7 @@ namespace BL
             return _entities;
         }
 
-        protected internal abstract void UpdateEntitiesProperty(string entityKey);
+        protected internal abstract void UpdateEntitiesProperty(string entityKey, out EntityType entityType, 
+            bool isCancelSelectPerson = false);
     }
 }

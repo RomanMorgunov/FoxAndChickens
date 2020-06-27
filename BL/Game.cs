@@ -17,11 +17,18 @@ namespace BL
 
         public GameMode GameMode { get; set; }
 
+        protected Field LastField { 
+            get
+            {
+                return _fields[_fields.Count - 1];
+            }
+        }
+
         public PlayerPerson Winner
         {
             get
             {
-                return _fields[_fields.Count - 1].LastPerson;
+                return LastField.LastPerson;
             }
         }
 
@@ -47,7 +54,7 @@ namespace BL
 
         public IDictionary<string, Entity> GetLastEntities()
         {
-            return _fields[_fields.Count - 1].GetEntities();
+            return LastField.GetEntities();
         }
 
         public int GetLeftChickens()
@@ -57,8 +64,21 @@ namespace BL
 
         public void Moving(string entityKey, out bool gameOver)
         {
-            _fields[_fields.Count - 1].UpdateEntitiesProperty(entityKey);
-            gameOver = _fields[_fields.Count - 1].GameOver;
+            LastField.UpdateEntitiesProperty(entityKey, out EntityType entityType);
+            gameOver = LastField.GameOver;
+
+            if (entityType == EntityType.EmptyCell && !gameOver)
+            {
+                _fields.Add(LastField.Clone());
+            }
+        }
+
+        public void CancelSelectedPerson()
+        {
+            LastField.LastPerson = LastField.LastPerson == PlayerPerson.Chicken ? PlayerPerson.Fox : PlayerPerson.Chicken;
+            foreach (var item in GetLastEntities())
+                if (item.Value.EntityType == EntityType.EmptyCell)
+                    LastField.UpdateEntitiesProperty(item.Key, out EntityType et, true);
         }
     }
 

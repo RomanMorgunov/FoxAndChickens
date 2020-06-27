@@ -26,29 +26,35 @@ namespace BL
             return new FieldPvP(entities);
         }
 
-        protected internal override void UpdateEntitiesProperty(string entityKey)
+        protected internal override void UpdateEntitiesProperty(string entityKey, out EntityType entityType, 
+            bool isCancelSelectPerson = false)
         {
             Entity entity = _entities[entityKey];
             Dictionary<string, Entity> moves;
 
-            if (entity.IsMovable == false)
+            if (entity.IsMovable == false && !isCancelSelectPerson)
                 throw new ArgumentException("This is not a moving person.");
+
+            ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypeToEmptyCell();
 
             if (entity.EntityType == EntityType.Chicken)
             {
                 FindChickenWays(entity, out moves);
                 LastPerson = PlayerPerson.Chicken;
+                entityType = EntityType.Chicken;
             }
             else if (entity.EntityType == EntityType.Fox)
             {
                 FindFoxWays(entity, out moves);
                 LastPerson = PlayerPerson.Fox;
+                entityType = EntityType.Fox;
             }
             //empty cell
             else
             {
                 UpdateEntityTypeAndImageType(entityKey);
                 FindMovableCharacters(out moves);
+                entityType = EntityType.EmptyCell;
             }
             UpdateIsMovable(moves);
         }
@@ -71,45 +77,72 @@ namespace BL
                 GameOver = true;
         }
 
+        protected void ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypeToEmptyCell()
+        {
+            foreach (var item in _entities.Values)
+            {
+                if (item.ImageType == ImageType.DeadChickenImage ||
+                    item.ImageType == ImageType.TrackImage ||
+                    item.ImageType == ImageType.StartPositionOfMovementImage)
+                    item.ImageType = ImageType.EmptyCellImage;
+            }
+        }
+
         protected void UpdateEntityTypeAndImageType(string entityKey)
         {
             Entity emptyCell = _entities[entityKey];
-            if (emptyCell.IsMovable == false || emptyCell.EntityType != EntityType.EmptyCell)
-                throw new ArgumentException("Invalid entity key.");
-
-            var list = bestsWays.FirstOrDefault(d => object.ReferenceEquals(d.Values.Last(), emptyCell)).ToList();
-            if (list is null || list.Count == 0)
-                throw new ArgumentException("Invalid entity key.");
-
-            Entity lastFox = list[0].Value;
-            if (lastFox.EntityType != EntityType.Fox)
+            if (bestsWays is null)
                 throw new ArgumentException("Invalid killing list.");
-            lastFox.EntityType = EntityType.EmptyCell;
-            lastFox.ImageType = ImageType.StartPositionOfMovementImage;
 
-            Entity newFox = list[list.Count - 1].Value;
-            if (newFox.EntityType != EntityType.EmptyCell)
-                throw new ArgumentException("Invalid killing list.");
-            newFox.EntityType = EntityType.Fox;
-            newFox.ImageType = ImageType.FoxImage;
+            var dict = bestsWays.FirstOrDefault(d => object.ReferenceEquals(d.Values.Last(), emptyCell));
+            if (dict is null)
+                throw new ArgumentException("Invalid entity key.");
+            var array = dict.ToArray();
 
-            for (int i = 1; i < list.Count - 1; i++)
+            Entity newEntity = array[array.Length - 1].Value;
+            if (newEntity.EntityType != EntityType.EmptyCell)
+                throw new ArgumentException("Invalid bests ways.");
+
+            Entity lastEntity = array[0].Value;
+
+            if (LastPerson == PlayerPerson.Chicken)
             {
-                Entity cell = list[i].Value;                
+                newEntity.EntityType = EntityType.Chicken;
+                newEntity.ImageType = ImageType.ChickenImage;
 
-                //if even
-                if (i % 2 == 0)
+                if (lastEntity.EntityType != EntityType.Chicken)
+                    throw new ArgumentException("Invalid bests ways.");
+                lastEntity.EntityType = EntityType.EmptyCell;
+                lastEntity.ImageType = ImageType.StartPositionOfMovementImage;
+            }
+            else
+            {
+                newEntity.EntityType = EntityType.Fox;
+                newEntity.ImageType = ImageType.FoxImage;
+
+                if (lastEntity.EntityType != EntityType.Fox)
+                    throw new ArgumentException("Invalid bests ways.");
+                lastEntity.EntityType = EntityType.EmptyCell;
+                lastEntity.ImageType = ImageType.StartPositionOfMovementImage;
+
+                for (int i = 1; i < array.Length - 1; i++)
                 {
-                    if (cell.EntityType != EntityType.EmptyCell)
-                        throw new ArgumentException("Invalid killing list.");
-                    cell.ImageType = ImageType.TrackImage;
-                }
-                else
-                {
-                    if (cell.EntityType != EntityType.Chicken)
-                        throw new ArgumentException("Invalid killing list.");
-                    cell.EntityType = EntityType.EmptyCell;
-                    cell.ImageType = ImageType.DeadChickenImage;
+                    Entity cell = array[i].Value;
+
+                    //if even
+                    if (i % 2 == 0)
+                    {
+                        if (cell.EntityType != EntityType.EmptyCell)
+                            throw new ArgumentException("Invalid bests ways.");
+                        cell.ImageType = ImageType.TrackImage;
+                    }
+                    else
+                    {
+                        if (cell.EntityType != EntityType.Chicken)
+                            throw new ArgumentException("Invalid bests ways.");
+                        cell.EntityType = EntityType.EmptyCell;
+                        cell.ImageType = ImageType.DeadChickenImage;
+                    }
                 }
             }
         }
@@ -155,7 +188,16 @@ namespace BL
 
         protected void FindChickenWays(Entity entity, out Dictionary<string, Entity> moves)
         {
+            bestsWays.Clear();
             FindTheMovingWays(entity, out moves, PlayerPerson.Chicken);
+
+            foreach (var item in moves)
+            {
+                var d = new Dictionary<string, Entity>(2);
+                d.Add(entity.GetKey(), entity);
+                d.Add(item.Key, item.Value);
+                bestsWays.Add(d);
+            }
         }
 
         protected void FindTheMovingWays(Entity entity, out Dictionary<string, Entity> moves, PlayerPerson playerPerson)
@@ -179,23 +221,31 @@ namespace BL
 
         protected void FindFoxWays(Entity entity, out Dictionary<string, Entity> moves)
         {
+            bestsWays.Clear();
             //finding biggests killing lists
             BeginFindingKillingWays(entity, out List<Dictionary<string, Entity>> ways);
 
-            bestsWays = new List<Dictionary<string, Entity>>();
+            //killing list is empty
+            if (ways.Count == 0)
+            {
+                FindTheMovingWays(entity, out moves, PlayerPerson.Fox);
+
+                foreach (var item in moves)
+                {
+                    var d = new Dictionary<string, Entity>(2);
+                    d.Add(entity.GetKey(), entity);
+                    d.Add(item.Key, item.Value);
+                    bestsWays.Add(d);
+                }
+                return;
+            }
+
             int maximum = ways[0].Count;
 
             for (int i = 1; i < ways.Count; i++)
             {
                 if (maximum < ways[i].Count)
                     maximum = ways[i].Count;
-            }
-
-            //killing list is empty
-            if (maximum == 0)
-            {
-                FindTheMovingWays(entity, out moves, PlayerPerson.Fox);
-                return;
             }
 
             foreach (var item in ways)
@@ -242,10 +292,10 @@ namespace BL
             string penult = arr[arr.Length - 2].Key;
             string last = arr[arr.Length - 1].Key;
 
-            int lastX = Convert.ToInt32(last[0]);
-            int lastY = Convert.ToInt32(last[1]);
-            int shiftX = lastX - Convert.ToInt32(penult[0]);
-            int shiftY = lastY - Convert.ToInt32(penult[1]);
+            int lastX = int.Parse(last[0].ToString());
+            int lastY = int.Parse(last[1].ToString());
+            int shiftX = lastX - int.Parse(penult[0].ToString());
+            int shiftY = lastY - int.Parse(penult[1].ToString());
 
             //checking on a empty cell
             string newKey = $"{lastX + shiftX}{lastY + shiftY}";

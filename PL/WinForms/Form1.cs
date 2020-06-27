@@ -114,6 +114,7 @@ namespace WinForms
 
         private void CellButton_Click(object sender, EventArgs e)
         {
+            countLabel.Text = (int.Parse(countLabel.Text) + 1).ToString();
             Button button = sender as Button;
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
@@ -127,12 +128,12 @@ namespace WinForms
 
         private void GameOver(PlayerPerson winner)
         {
-            MessageBox.Show($"{winner} wons!!!", "Game Over", MessageBoxButtons.OK);
+            MessageBox.Show($"The {winner} wons!!!", "Game Over", MessageBoxButtons.OK);
         }
 
         private void CancelSelectedPersonButton_Click(object sender, EventArgs e)
         {
-            //_game.Cancel...
+            _game.CancelSelectedPerson();
             BlockButtonsOnTheForm();
         }
 

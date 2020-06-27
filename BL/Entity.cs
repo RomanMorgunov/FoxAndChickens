@@ -59,7 +59,8 @@ namespace BL
                 X = _x,
                 Y = _y,
                 EntityType = this.EntityType,
-                ImageType = this.ImageType
+                ImageType = this.ImageType,
+                IsMovable = this.IsMovable
             };
         }
 
