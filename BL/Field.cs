@@ -10,6 +10,7 @@ namespace BL
     public abstract class Field
     {
         protected IDictionary<string, Entity> _entities;
+        protected List<Dictionary<string, Entity>> bestsWays;
 
         protected internal Field()
         {
