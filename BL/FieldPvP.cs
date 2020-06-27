@@ -10,10 +10,7 @@ namespace BL
     public class FieldPvP : Field
     {
         public FieldPvP()
-            : base()
-        {
-
-        }
+            : base() { }
 
         protected FieldPvP(IDictionary<string, Entity> entities)
             : base(entities) { }
@@ -40,12 +37,24 @@ namespace BL
             if (entity.EntityType == EntityType.Chicken)
             {
                 FindChickenWays(entity, out moves);
+                LastPerson = PlayerPerson.Chicken;
             }
-            else
+            else if (entity.EntityType == EntityType.Fox)
             {
                 FindFoxWays(entity, out moves);
+                LastPerson = PlayerPerson.Fox;
             }
+            //empty cell
+            else
+            {
+                UpdateEntityTypeAndImageType(entityKey);
+                FindMovableCharacters(out moves);
+            }
+            UpdateIsMovable(moves);
+        }
 
+        protected void UpdateIsMovable(Dictionary<string, Entity> moves)
+        {
             foreach (var item in _entities.Values)
             {
                 item.IsMovable = false;
@@ -54,11 +63,94 @@ namespace BL
             int count = 0;
             foreach (var item in moves.Values)
             {
-                item.IsMovable = true;
                 count++;
+                item.IsMovable = true;
             }
 
-            //check on Game over
+            if (count == 0)
+                GameOver = true;
+        }
+
+        protected void UpdateEntityTypeAndImageType(string entityKey)
+        {
+            Entity emptyCell = _entities[entityKey];
+            if (emptyCell.IsMovable == false || emptyCell.EntityType != EntityType.EmptyCell)
+                throw new ArgumentException("Invalid entity key.");
+
+            var list = bestsWays.FirstOrDefault(d => object.ReferenceEquals(d.Values.Last(), emptyCell)).ToList();
+            if (list is null || list.Count == 0)
+                throw new ArgumentException("Invalid entity key.");
+
+            Entity lastFox = list[0].Value;
+            if (lastFox.EntityType != EntityType.Fox)
+                throw new ArgumentException("Invalid killing list.");
+            lastFox.EntityType = EntityType.EmptyCell;
+            lastFox.ImageType = ImageType.StartPositionOfMovementImage;
+
+            Entity newFox = list[list.Count - 1].Value;
+            if (newFox.EntityType != EntityType.EmptyCell)
+                throw new ArgumentException("Invalid killing list.");
+            newFox.EntityType = EntityType.Fox;
+            newFox.ImageType = ImageType.FoxImage;
+
+            for (int i = 1; i < list.Count - 1; i++)
+            {
+                Entity cell = list[i].Value;                
+
+                //if even
+                if (i % 2 == 0)
+                {
+                    if (cell.EntityType != EntityType.EmptyCell)
+                        throw new ArgumentException("Invalid killing list.");
+                    cell.ImageType = ImageType.TrackImage;
+                }
+                else
+                {
+                    if (cell.EntityType != EntityType.Chicken)
+                        throw new ArgumentException("Invalid killing list.");
+                    cell.EntityType = EntityType.EmptyCell;
+                    cell.ImageType = ImageType.DeadChickenImage;
+                }
+            }
+        }
+
+        protected void FindMovableCharacters(out Dictionary<string, Entity> availableCharacters)
+        {
+            availableCharacters = new Dictionary<string, Entity>();
+
+            //if the next move per fox
+            if (LastPerson == PlayerPerson.Chicken)
+            {
+                foreach (var item in _entities.Values)
+                {
+                    if (item.EntityType == EntityType.Fox)
+                    {
+                        FindFoxWays(item, out Dictionary<string, Entity> moves);
+                        if (moves.Count != 0)
+                            availableCharacters.Add(item.GetKey(), item);
+
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                int countOfChikens = 0;
+                foreach (var item in _entities.Values)
+                {
+                    //13 chickens in the game
+                    if (countOfChikens == 13)
+                        break;
+
+                    if (item.EntityType == EntityType.Chicken)
+                    {
+                        countOfChikens++;
+                        FindChickenWays(item, out Dictionary<string, Entity> moves);
+                        if (moves.Count != 0)
+                            availableCharacters.Add(item.GetKey(), item);
+                    }
+                }
+            }
         }
 
         protected void FindChickenWays(Entity entity, out Dictionary<string, Entity> moves)

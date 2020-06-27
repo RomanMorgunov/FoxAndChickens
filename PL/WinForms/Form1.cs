@@ -74,11 +74,12 @@ namespace WinForms
         private void InitDictionaryConformityImages()
         {
             _conformityImageTypeWithImage = new Dictionary<ImageType, Image>();
-            _conformityImageTypeWithImage[ImageType.FoxPicture] = imageList.Images[0];
-            _conformityImageTypeWithImage[ImageType.ChickenPicture] = imageList.Images[1];
-            _conformityImageTypeWithImage[ImageType.EmptyCellPicture] = imageList.Images[2];
-            _conformityImageTypeWithImage[ImageType.DeadChickenPicture] = imageList.Images[3];
-            _conformityImageTypeWithImage[ImageType.LastMovePicture] = imageList.Images[4];
+            _conformityImageTypeWithImage[ImageType.FoxImage] = imageList.Images[0];
+            _conformityImageTypeWithImage[ImageType.ChickenImage] = imageList.Images[1];
+            _conformityImageTypeWithImage[ImageType.EmptyCellImage] = imageList.Images[2];
+            _conformityImageTypeWithImage[ImageType.DeadChickenImage] = imageList.Images[3];
+            _conformityImageTypeWithImage[ImageType.StartPositionOfMovementImage] = imageList.Images[4];
+            _conformityImageTypeWithImage[ImageType.TrackImage] = imageList.Images[5];
         }
 
         private void InitDictionaryConformityButtons()
@@ -117,8 +118,16 @@ namespace WinForms
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
 
-            _game.Moving(button.Tag.ToString());
+            _game.Moving(button.Tag.ToString(), out bool gameOver);
             UpdateFieldOnTheForm();
+
+            if (gameOver)
+                GameOver(_game.Winner);
+        }
+
+        private void GameOver(PlayerPerson winner)
+        {
+            MessageBox.Show($"{winner} wons!!!", "Game Over", MessageBoxButtons.OK);
         }
 
         private void CancelSelectedPersonButton_Click(object sender, EventArgs e)

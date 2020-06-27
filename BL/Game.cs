@@ -17,6 +17,14 @@ namespace BL
 
         public GameMode GameMode { get; set; }
 
+        public PlayerPerson Winner
+        {
+            get
+            {
+                return _fields[_fields.Count - 1].LastPerson;
+            }
+        }
+
         public Game()
         {
             this.GameMode = GameMode.PlayerVsPlayer;
@@ -47,9 +55,10 @@ namespace BL
             return GetLastEntities().Values.Where(e => e.EntityType == EntityType.Chicken).Count() - 8;
         }
 
-        public void Moving(string entityKey)
+        public void Moving(string entityKey, out bool gameOver)
         {
             _fields[_fields.Count - 1].UpdateEntitiesProperty(entityKey);
+            gameOver = _fields[_fields.Count - 1].GameOver;
         }
     }
 

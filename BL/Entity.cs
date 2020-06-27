@@ -78,10 +78,11 @@ namespace BL
 
     public enum ImageType
     {
-        EmptyCellPicture,
-        ChickenPicture,
-        FoxPicture,
-        DeadChickenPicture,
-        LastMovePicture
+        EmptyCellImage,
+        ChickenImage,
+        FoxImage,
+        DeadChickenImage,
+        StartPositionOfMovementImage,
+        TrackImage
     }
 }

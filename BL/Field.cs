@@ -12,10 +12,15 @@ namespace BL
         protected IDictionary<string, Entity> _entities;
         protected List<Dictionary<string, Entity>> bestsWays;
 
+        public PlayerPerson LastPerson { get; protected set; }
+
+        public bool GameOver { get; protected set; }
+
         protected internal Field()
         {
             //The field consist of 33 cells
             _entities = new Dictionary<string, Entity>(33);
+            GameOver = false;
             InitEntities();
         }
 
@@ -37,7 +42,7 @@ namespace BL
                         X = x,
                         Y = y,
                         EntityType = EntityType.EmptyCell,
-                        ImageType = ImageType.EmptyCellPicture
+                        ImageType = ImageType.EmptyCellImage
                     };
                     _entities.Add(entity.GetKey(), entity);
                 }
@@ -52,13 +57,13 @@ namespace BL
                         X = x,
                         Y = y,
                         EntityType = EntityType.EmptyCell,
-                        ImageType = ImageType.EmptyCellPicture
+                        ImageType = ImageType.EmptyCellImage
                     };
 
                     if (x == 3 && y == 2)
                     {
                         entity.EntityType = EntityType.Fox;
-                        entity.ImageType = ImageType.FoxPicture;
+                        entity.ImageType = ImageType.FoxImage;
                     }
 
                     _entities.Add(entity.GetKey(), entity);
@@ -75,7 +80,7 @@ namespace BL
                         Y = y,
                         IsMovable = true,
                         EntityType = EntityType.Chicken,
-                        ImageType = ImageType.ChickenPicture
+                        ImageType = ImageType.ChickenImage
                     };
 
                     _entities.Add(entity.GetKey(), entity);
@@ -91,7 +96,7 @@ namespace BL
                         X = x,
                         Y = y,
                         EntityType = EntityType.Chicken,
-                        ImageType = ImageType.ChickenPicture
+                        ImageType = ImageType.ChickenImage
                     };
 
                     _entities.Add(entity.GetKey(), entity);
