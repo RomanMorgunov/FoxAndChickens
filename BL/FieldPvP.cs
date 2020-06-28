@@ -17,22 +17,31 @@ namespace BL
 
         protected internal override Field Clone()
         {
-            Dictionary<string, Entity> entities = new Dictionary<string, Entity>();
+            Dictionary<string, Entity> entities = new Dictionary<string, Entity>(33);
             foreach (var item in _entities)
             {
                 entities.Add(item.Key, item.Value.Clone());
             }
 
+            List<Dictionary<string, Entity>> bestsWays = new List<Dictionary<string, Entity>>(8);
+            foreach (var item in _bestsWays)
+            {
+                Dictionary<string, Entity> pairs = new Dictionary<string, Entity>(33);
+                foreach (var subitem in item)
+                    pairs.Add(subitem.Key, subitem.Value.Clone());
+
+                bestsWays.Add(pairs);
+            }
+
             return new FieldPvP(entities);
         }
 
-        protected internal override void UpdateEntitiesProperty(string entityKey, out EntityType entityType, 
-            bool isCancelSelectPerson = false)
+        protected internal override void UpdateEntitiesProperty(string entityKey)
         {
             Entity entity = _entities[entityKey];
             Dictionary<string, Entity> moves;
 
-            if (entity.IsMovable == false && !isCancelSelectPerson)
+            if (entity.IsMovable == false)
                 throw new ArgumentException("This is not a moving person.");
 
             ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypeToEmptyCell();
@@ -41,40 +50,19 @@ namespace BL
             {
                 FindChickenWays(entity, out moves);
                 LastPerson = PlayerPerson.Chicken;
-                entityType = EntityType.Chicken;
             }
             else if (entity.EntityType == EntityType.Fox)
             {
                 FindFoxWays(entity, out moves);
                 LastPerson = PlayerPerson.Fox;
-                entityType = EntityType.Fox;
             }
             //empty cell
             else
             {
                 UpdateEntityTypeAndImageType(entityKey);
                 FindMovableCharacters(out moves);
-                entityType = EntityType.EmptyCell;
             }
             UpdateIsMovable(moves);
-        }
-
-        protected void UpdateIsMovable(Dictionary<string, Entity> moves)
-        {
-            foreach (var item in _entities.Values)
-            {
-                item.IsMovable = false;
-            }
-
-            int count = 0;
-            foreach (var item in moves.Values)
-            {
-                count++;
-                item.IsMovable = true;
-            }
-
-            if (count == 0)
-                GameOver = true;
         }
 
         protected void ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypeToEmptyCell()
@@ -91,10 +79,10 @@ namespace BL
         protected void UpdateEntityTypeAndImageType(string entityKey)
         {
             Entity emptyCell = _entities[entityKey];
-            if (bestsWays is null)
+            if (_bestsWays is null)
                 throw new ArgumentException("Invalid killing list.");
 
-            var dict = bestsWays.FirstOrDefault(d => object.ReferenceEquals(d.Values.Last(), emptyCell));
+            var dict = _bestsWays.FirstOrDefault(d => d.Values.Last().Equals(emptyCell));
             if (dict is null)
                 throw new ArgumentException("Invalid entity key.");
             var array = dict.ToArray();
@@ -188,7 +176,7 @@ namespace BL
 
         protected void FindChickenWays(Entity entity, out Dictionary<string, Entity> moves)
         {
-            bestsWays.Clear();
+            _bestsWays.Clear();
             FindTheMovingWays(entity, out moves, PlayerPerson.Chicken);
 
             foreach (var item in moves)
@@ -196,7 +184,7 @@ namespace BL
                 var d = new Dictionary<string, Entity>(2);
                 d.Add(entity.GetKey(), entity);
                 d.Add(item.Key, item.Value);
-                bestsWays.Add(d);
+                _bestsWays.Add(d);
             }
         }
 
@@ -221,7 +209,7 @@ namespace BL
 
         protected void FindFoxWays(Entity entity, out Dictionary<string, Entity> moves)
         {
-            bestsWays.Clear();
+            _bestsWays.Clear();
             //finding biggests killing lists
             BeginFindingKillingWays(entity, out List<Dictionary<string, Entity>> ways);
 
@@ -235,7 +223,7 @@ namespace BL
                     var d = new Dictionary<string, Entity>(2);
                     d.Add(entity.GetKey(), entity);
                     d.Add(item.Key, item.Value);
-                    bestsWays.Add(d);
+                    _bestsWays.Add(d);
                 }
                 return;
             }
@@ -251,14 +239,14 @@ namespace BL
             foreach (var item in ways)
             {
                 if (item.Count == maximum)
-                    bestsWays.Add(item);
+                    _bestsWays.Add(item);
             }
 
             moves = new Dictionary<string, Entity>(4);
-            foreach (var item in bestsWays)
+            foreach (var item in _bestsWays)
             {
                 var pair = item.Last();
-                moves.Add(pair.Key, pair.Value);
+                moves[pair.Key] = pair.Value;
             }
         }
 
@@ -283,6 +271,9 @@ namespace BL
                     }
                 }
             }
+
+            //delete faulty ways
+            ways.RemoveAll(d => d.Count < 3);
         }
 
         protected void FindKillingWays(Dictionary<string, Entity> entities, in List<Dictionary<string, Entity>> ways)
@@ -319,7 +310,9 @@ namespace BL
                     string key = $"{newEntity.X + x}{newEntity.Y + y}";
                     if (_entities.TryGetValue(key, out Entity cell) && cell.EntityType == EntityType.Chicken)
                     {
+                        entities.Add(key, cell);
                         FindKillingWays(new Dictionary<string, Entity>(entities), ways);
+                        entities.Remove(key);
                         count++;
                     }
                 }

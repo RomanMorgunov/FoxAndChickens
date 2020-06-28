@@ -38,10 +38,7 @@ namespace BL
 
         public bool IsMovable { get; protected internal set; }
 
-        protected internal Entity() 
-        {
-            IsMovable = false;
-        }
+        protected internal Entity() { }
 
         protected internal Entity(int x, int y, EntityType entityType, ImageType pictureType, bool isMovable)
         {
@@ -67,6 +64,16 @@ namespace BL
         public string GetKey()
         {
             return $"{X}{Y}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Entity entity &&
+                   X == entity.X &&
+                   Y == entity.Y &&
+                   EntityType == entity.EntityType &&
+                   ImageType == entity.ImageType &&
+                   IsMovable == entity.IsMovable;
         }
     }
 

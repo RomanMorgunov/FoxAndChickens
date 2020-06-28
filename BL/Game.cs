@@ -24,18 +24,12 @@ namespace BL
             }
         }
 
-        public PlayerPerson Winner
-        {
-            get
-            {
-                return LastField.LastPerson;
-            }
-        }
+        public PlayerPerson Winner { get; protected set; }
 
         public Game()
         {
             this.GameMode = GameMode.PlayerVsPlayer;
-            _fields = new List<Field>();
+            _fields = new List<Field>(64);
             _fields.Add(new FieldPvP());
         }
 
@@ -64,21 +58,36 @@ namespace BL
 
         public void Moving(string entityKey, out bool gameOver)
         {
-            LastField.UpdateEntitiesProperty(entityKey, out EntityType entityType);
-            gameOver = LastField.GameOver;
-
-            if (entityType == EntityType.EmptyCell && !gameOver)
+            //create a copy field
+            if (LastField.GetEntityTypeOfMovingCharacters() != EntityType.EmptyCell)
             {
                 _fields.Add(LastField.Clone());
             }
+
+            //
+            LastField.UpdateEntitiesProperty(entityKey);
+
+            gameOver = false;
+            if (LastField.GameOver)
+            {
+                gameOver = true;
+                Winner = LastField.LastPerson;
+            }
+            else
+            {
+                LastField.CheckOnTheEndOfTheGame();
+                if (LastField.GameOver)
+                {
+                    gameOver = true;
+                    Winner = LastField.LastPerson;
+                }
+            }
         }
 
-        public void CancelSelectedPerson()
+        public void CancelMove()
         {
-            LastField.LastPerson = LastField.LastPerson == PlayerPerson.Chicken ? PlayerPerson.Fox : PlayerPerson.Chicken;
-            foreach (var item in GetLastEntities())
-                if (item.Value.EntityType == EntityType.EmptyCell)
-                    LastField.UpdateEntitiesProperty(item.Key, out EntityType et, true);
+            if (_fields.Count > 1)
+                _fields.RemoveAt(_fields.Count - 1);
         }
     }
 

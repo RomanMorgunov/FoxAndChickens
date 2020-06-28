@@ -10,7 +10,7 @@ namespace BL
     public abstract class Field
     {
         protected IDictionary<string, Entity> _entities;
-        protected List<Dictionary<string, Entity>> bestsWays;
+        protected List<Dictionary<string, Entity>> _bestsWays;
 
         public PlayerPerson LastPerson { get; protected internal set; }
 
@@ -20,16 +20,16 @@ namespace BL
         {
             //The field consist of 33 cells
             _entities = new Dictionary<string, Entity>(33);
-            bestsWays = new List<Dictionary<string, Entity>>(8);
+            _bestsWays = new List<Dictionary<string, Entity>>(8);
             GameOver = false;
             InitEntities();
         }
 
         protected Field(IDictionary<string, Entity> entities)
         {
-            _entities = new Dictionary<string, Entity>(entities);
-            bestsWays = new List<Dictionary<string, Entity>>(8);
             GameOver = false;
+            _entities = new Dictionary<string, Entity>(entities);
+            _bestsWays = new List<Dictionary<string, Entity>>(8);
         }
 
         protected internal abstract Field Clone();
@@ -112,7 +112,54 @@ namespace BL
             return _entities;
         }
 
-        protected internal abstract void UpdateEntitiesProperty(string entityKey, out EntityType entityType, 
-            bool isCancelSelectPerson = false);
+        protected void UpdateIsMovable(Dictionary<string, Entity> moves)
+        {
+            foreach (var item in _entities.Values)
+            {
+                item.IsMovable = false;
+            }
+
+            int count = 0;
+            foreach (var item in moves.Values)
+            {
+                count++;
+                item.IsMovable = true;
+            }
+
+            if (count == 0)
+                GameOver = true;
+        }
+
+        protected internal void CheckOnTheEndOfTheGame()
+        {
+            if (_entities.Values.Where(e => e.EntityType == EntityType.Chicken).Count() - 8 == 0)
+            {
+                UpdateIsMovable(new Dictionary<string, Entity>(1));
+            }
+
+            int count = 0;
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 2; x < 5; x++)
+                {
+                    if (_entities[$"{x}{y}"].EntityType == EntityType.Chicken)
+                        count++;
+                }
+            }
+            if (count == 9)
+            {
+                UpdateIsMovable(new Dictionary<string, Entity>(1));
+            }
+        }
+
+        protected internal EntityType GetEntityTypeOfMovingCharacters()
+        {
+            var item = _entities.Where(p => p.Value.IsMovable == true).FirstOrDefault();
+            if (item.Key is null || item.Value is null)
+                throw new ArgumentNullException("It is impossible to obtain data of moving characters.");
+            return item.Value.EntityType;
+        }
+
+        protected internal abstract void UpdateEntitiesProperty(string entityKey);
     }
 }

@@ -77,10 +77,10 @@
             this.cell30Btn = new System.Windows.Forms.Button();
             this.cell20Btn = new System.Windows.Forms.Button();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.cancelSelectedPersonBtn = new System.Windows.Forms.ToolStripButton();
+            this.cancelMoveBtn = new System.Windows.Forms.ToolStripButton();
             this.chickensLeftLbl = new System.Windows.Forms.ToolStripLabel();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.countLabel = new System.Windows.Forms.ToolStripLabel();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip.SuspendLayout();
             this.GameFieldTLP.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -766,7 +766,7 @@
             this.toolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cancelSelectedPersonBtn,
+            this.cancelMoveBtn,
             this.chickensLeftLbl,
             this.countLabel});
             this.toolStrip.Location = new System.Drawing.Point(0, 566);
@@ -775,14 +775,14 @@
             this.toolStrip.TabIndex = 6;
             this.toolStrip.Text = "Панель уведомлений";
             // 
-            // cancelSelectedPersonBtn
+            // cancelMoveBtn
             // 
-            this.cancelSelectedPersonBtn.Image = ((System.Drawing.Image)(resources.GetObject("cancelSelectedPersonBtn.Image")));
-            this.cancelSelectedPersonBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.cancelSelectedPersonBtn.Name = "cancelSelectedPersonBtn";
-            this.cancelSelectedPersonBtn.Size = new System.Drawing.Size(148, 22);
-            this.cancelSelectedPersonBtn.Text = "Cancel selected person";
-            this.cancelSelectedPersonBtn.Click += new System.EventHandler(this.CancelSelectedPersonButton_Click);
+            this.cancelMoveBtn.Image = ((System.Drawing.Image)(resources.GetObject("cancelMoveBtn.Image")));
+            this.cancelMoveBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cancelMoveBtn.Name = "cancelMoveBtn";
+            this.cancelMoveBtn.Size = new System.Drawing.Size(96, 22);
+            this.cancelMoveBtn.Text = "Cancel move";
+            this.cancelMoveBtn.Click += new System.EventHandler(this.CancelMoveButton_Click);
             // 
             // chickensLeftLbl
             // 
@@ -794,6 +794,13 @@
             this.chickensLeftLbl.Text = "To win, foxes need to eat 5";
             this.chickensLeftLbl.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             // 
+            // countLabel
+            // 
+            this.countLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.countLabel.Name = "countLabel";
+            this.countLabel.Size = new System.Drawing.Size(13, 22);
+            this.countLabel.Text = "0";
+            // 
             // imageList
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
@@ -804,13 +811,6 @@
             this.imageList.Images.SetKeyName(3, "chickenDead.png");
             this.imageList.Images.SetKeyName(4, "start_position.png");
             this.imageList.Images.SetKeyName(5, "track.png");
-            // 
-            // countLabel
-            // 
-            this.countLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.countLabel.Name = "countLabel";
-            this.countLabel.Size = new System.Drawing.Size(13, 22);
-            this.countLabel.Text = "0";
             // 
             // GameForm
             // 
@@ -889,7 +889,7 @@
         private System.Windows.Forms.Button cell30Btn;
         private System.Windows.Forms.Button cell20Btn;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton cancelSelectedPersonBtn;
+        private System.Windows.Forms.ToolStripButton cancelMoveBtn;
         private System.Windows.Forms.ToolStripLabel chickensLeftLbl;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.ToolStripLabel countLabel;

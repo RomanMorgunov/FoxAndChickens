@@ -28,8 +28,7 @@ namespace BL
             return new FieldAI(entities);
         }
 
-        protected internal override void UpdateEntitiesProperty(string entityKey, out EntityType entityType,
-            bool isCancelSelectPerson = false)
+        protected internal override void UpdateEntitiesProperty(string entityKey)
         {
             throw new NotImplementedException();
         }

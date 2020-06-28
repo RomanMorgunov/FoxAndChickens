@@ -131,10 +131,10 @@ namespace WinForms
             MessageBox.Show($"The {winner} wons!!!", "Game Over", MessageBoxButtons.OK);
         }
 
-        private void CancelSelectedPersonButton_Click(object sender, EventArgs e)
+        private void CancelMoveButton_Click(object sender, EventArgs e)
         {
-            _game.CancelSelectedPerson();
-            BlockButtonsOnTheForm();
+            _game.CancelMove();
+            UpdateFieldOnTheForm();
         }
 
         //****************************interface begin
