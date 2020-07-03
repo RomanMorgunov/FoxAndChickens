@@ -251,6 +251,8 @@
             this.GameFieldTLP.Controls.Add(this.cell20Btn, 2, 0);
             this.GameFieldTLP.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
             this.GameFieldTLP.Location = new System.Drawing.Point(2, 29);
+            this.GameFieldTLP.MaximumSize = new System.Drawing.Size(672, 532);
+            this.GameFieldTLP.MinimumSize = new System.Drawing.Size(672, 532);
             this.GameFieldTLP.Name = "GameFieldTLP";
             this.GameFieldTLP.RowCount = 7;
             this.GameFieldTLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
@@ -263,6 +265,7 @@
             this.GameFieldTLP.Size = new System.Drawing.Size(672, 532);
             this.GameFieldTLP.TabIndex = 5;
             this.GameFieldTLP.Tag = "";
+            this.GameFieldTLP.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell46Btn
             // 
@@ -598,7 +601,7 @@
             // cell42Btn
             // 
             this.cell42Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell42Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell42Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell42Btn.FlatAppearance.BorderSize = 2;
             this.cell42Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell42Btn.Location = new System.Drawing.Point(387, 155);
@@ -613,7 +616,7 @@
             // cell32Btn
             // 
             this.cell32Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell32Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell32Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell32Btn.FlatAppearance.BorderSize = 2;
             this.cell32Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell32Btn.Location = new System.Drawing.Point(291, 155);
@@ -628,7 +631,7 @@
             // cell22Btn
             // 
             this.cell22Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell22Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell22Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell22Btn.FlatAppearance.BorderSize = 2;
             this.cell22Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell22Btn.Location = new System.Drawing.Point(195, 155);
@@ -673,7 +676,7 @@
             // cell41Btn
             // 
             this.cell41Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell41Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell41Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell41Btn.FlatAppearance.BorderSize = 2;
             this.cell41Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell41Btn.Location = new System.Drawing.Point(387, 79);
@@ -688,7 +691,7 @@
             // cell31Btn
             // 
             this.cell31Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell31Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell31Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell31Btn.FlatAppearance.BorderSize = 2;
             this.cell31Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell31Btn.Location = new System.Drawing.Point(291, 79);
@@ -703,7 +706,7 @@
             // cell21Btn
             // 
             this.cell21Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell21Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell21Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell21Btn.FlatAppearance.BorderSize = 2;
             this.cell21Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell21Btn.Location = new System.Drawing.Point(195, 79);
@@ -718,7 +721,7 @@
             // cell40Btn
             // 
             this.cell40Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell40Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell40Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell40Btn.FlatAppearance.BorderSize = 2;
             this.cell40Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell40Btn.Location = new System.Drawing.Point(387, 3);
@@ -733,7 +736,7 @@
             // cell30Btn
             // 
             this.cell30Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell30Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell30Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell30Btn.FlatAppearance.BorderSize = 2;
             this.cell30Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell30Btn.Location = new System.Drawing.Point(291, 3);
@@ -748,7 +751,7 @@
             // cell20Btn
             // 
             this.cell20Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell20Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
+            this.cell20Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
             this.cell20Btn.FlatAppearance.BorderSize = 2;
             this.cell20Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell20Btn.Location = new System.Drawing.Point(195, 3);
@@ -824,6 +827,8 @@
             this.ForeColor = System.Drawing.Color.Maroon;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MaximumSize = new System.Drawing.Size(692, 630);
+            this.MinimumSize = new System.Drawing.Size(692, 630);
             this.Name = "GameForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

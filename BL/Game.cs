@@ -17,14 +17,20 @@ namespace BL
 
         public GameMode GameMode { get; set; }
 
-        protected Field LastField { 
+        protected Field LastField
+        {
             get
             {
                 return _fields[_fields.Count - 1];
             }
         }
 
-        public PlayerPerson Winner { get; protected set; }
+        //events
+        public event EventHandler<MovingEventArgs> OnChangeMovingStatus;
+
+        public event EventHandler<ImageTypeEventArgs> OnChangeImageType;
+
+        public event EventHandler<WinEventArgs> OnWin;
 
         public Game()
         {
@@ -46,17 +52,40 @@ namespace BL
                 _fields.Add(new FieldAI());
         }
 
-        public IDictionary<string, Entity> GetLastEntities()
+        protected internal IDictionary<string, bool> GetDictionaryWithMovingStatus()
         {
-            return LastField.GetEntities();
+            Dictionary<string, bool> pairs = new Dictionary<string, bool>(33);
+            foreach (var item in LastField.GetEntities())
+            {
+                pairs[item.Key] = item.Value.IsMovable;
+            }
+
+            return pairs;
         }
 
-        public int GetLeftChickens()
+        protected internal IDictionary<string, ImageType> GetDictionaryWithImageTypes()
         {
-            return GetLastEntities().Values.Where(e => e.EntityType == EntityType.Chicken).Count() - 8;
+            Dictionary<string, ImageType> pairs = new Dictionary<string, ImageType>(33);
+            foreach (var item in LastField.GetEntities())
+            {
+                pairs[item.Key] = item.Value.ImageType;
+            }
+
+            return pairs;
         }
 
-        public void Moving(string entityKey, out bool gameOver)
+        protected internal int GetLeftChickens()
+        {
+            return LastField.GetChickensCount() - 8;
+        }
+
+        public void CallUpdateEvents()
+        {
+            OnChangeMovingStatus?.Invoke(this, new MovingEventArgs(GetDictionaryWithMovingStatus()));
+            OnChangeImageType?.Invoke(this, new ImageTypeEventArgs(GetDictionaryWithImageTypes(), GetLeftChickens()));
+        }
+
+        public void Moving(string entityKey)
         {
             //create a copy field
             if (LastField.GetEntityTypeOfMovingCharacters() != EntityType.EmptyCell)
@@ -64,30 +93,24 @@ namespace BL
                 _fields.Add(LastField.Clone());
             }
 
-            //
+            //Moving
             LastField.UpdateEntitiesProperty(entityKey);
 
-            gameOver = false;
             if (LastField.GameOver)
             {
-                gameOver = true;
-                Winner = LastField.LastPerson;
+                OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
             }
-            else
-            {
-                LastField.CheckOnTheEndOfTheGame();
-                if (LastField.GameOver)
-                {
-                    gameOver = true;
-                    Winner = LastField.LastPerson;
-                }
-            }
+
+            CallUpdateEvents();
         }
 
         public void CancelMove()
         {
             if (_fields.Count > 1)
+            {
                 _fields.RemoveAt(_fields.Count - 1);
+                CallUpdateEvents();
+            }
         }
     }
 

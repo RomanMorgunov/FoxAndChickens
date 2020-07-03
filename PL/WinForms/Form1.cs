@@ -54,21 +54,22 @@ namespace WinForms
 
         private void GameForm_Load(object sender, EventArgs e)
         {
-            NewGame();            
+            NewGame();
         }
 
         private void NewGame()
         {
             _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode);
 
-            UpdateFieldOnTheForm();
-        }
+            _game.OnChangeMovingStatus -= UpdateEnableStatusOfButtons;
+            _game.OnChangeImageType -= UpdateImagesAndChickenLeftStatus;
+            _game.OnWin -= GameOver;
 
-        private void UpdateFieldOnTheForm()
-        {
-            LoadPictureInTheForm();
-            BlockButtonsOnTheForm();
-            UpdateChickensLeftLabel();
+            _game.OnChangeMovingStatus += UpdateEnableStatusOfButtons;
+            _game.OnChangeImageType += UpdateImagesAndChickenLeftStatus;
+            _game.OnWin += GameOver;
+
+            _game.CallUpdateEvents();
         }
 
         private void InitDictionaryConformityImages()
@@ -95,20 +96,22 @@ namespace WinForms
             }
         }
 
-        private void LoadPictureInTheForm()
+        private void UpdateImagesAndChickenLeftStatus(object sender, ImageTypeEventArgs e)
         {
-            var entities = _game.GetLastEntities();
+            var imageTypes = e.ImageTypePairs;
             foreach (var pair in _conformityButtonWithHisIndex)
             {
-                pair.Value.Image = _conformityImageTypeWithImage[entities[pair.Key].ImageType];
+                pair.Value.Image = _conformityImageTypeWithImage[imageTypes[pair.Key]];
             }
+
+            UpdateChickensLeftLabel(e.ChickensLeftBeforeLosing);
         }
 
-        private void BlockButtonsOnTheForm()
+        private void UpdateEnableStatusOfButtons(object sender, MovingEventArgs e)
         {
-            foreach (var pair in _game.GetLastEntities())
+            foreach (var pair in e.IsMovablePairs)
             {
-                _conformityButtonWithHisIndex[pair.Key].Enabled = pair.Value.IsMovable;               
+                _conformityButtonWithHisIndex[pair.Key].Enabled = pair.Value;               
             }
         }
 
@@ -119,28 +122,23 @@ namespace WinForms
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
 
-            _game.Moving(button.Tag.ToString(), out bool gameOver);
-            UpdateFieldOnTheForm();
-
-            if (gameOver)
-                GameOver(_game.Winner);
-        }
-
-        private void GameOver(PlayerPerson winner)
-        {
-            MessageBox.Show($"The {winner} wons!!!", "Game Over", MessageBoxButtons.OK);
+            _game.Moving(button.Tag.ToString());
         }
 
         private void CancelMoveButton_Click(object sender, EventArgs e)
         {
             _game.CancelMove();
-            UpdateFieldOnTheForm();
         }
 
         //****************************interface begin
-        private void UpdateChickensLeftLabel()
+        private void GameOver(object sender, WinEventArgs e)
         {
-            chickensLeftLbl.Text = $"To win, foxes need to eat {_game.GetLeftChickens()}";
+            MessageBox.Show($"The {e.Winner} wons!!!", "Game Over", MessageBoxButtons.OK);
+        }
+
+        private void UpdateChickensLeftLabel(int chickenLeft)
+        {
+            chickensLeftLbl.Text = $"To win, foxes need to eat {chickenLeft}";
         }
 
         private void NewGameTSMI_Click(object sender, EventArgs e)
@@ -235,6 +233,14 @@ namespace WinForms
                     this.mediumLevelTSMI.Checked = false;
                     NewGame();
                 }
+            }
+        }
+
+        private void GameFieldTLP_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                CancelMoveButton_Click(sender, EventArgs.Empty);
             }
         }
         //****************************interface end

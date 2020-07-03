@@ -9,10 +9,7 @@ namespace BL
     public class FieldAI : Field
     {
         public FieldAI()
-            :base()
-        {
-
-        }
+            : base() { }
 
         protected FieldAI(IDictionary<string, Entity> entities)
             : base(entities) { }
@@ -29,6 +26,37 @@ namespace BL
         }
 
         protected internal override void UpdateEntitiesProperty(string entityKey)
+        {
+            Entity entity = _entities[entityKey];
+            Dictionary<string, Entity> moves;
+
+            if (entity.IsMovable == false)
+                throw new ArgumentException("This is not a moving person.");
+
+            ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypeToEmptyCell();
+
+            if (entity.EntityType == EntityType.Chicken)
+            {
+                FindChickenWays(entity, out moves);
+                LastPerson = PlayerPerson.Chicken;
+            }
+            else if (entity.EntityType == EntityType.Fox)
+            {
+                FindFoxWays(entity, out moves);
+                LastPerson = PlayerPerson.Fox;
+            }
+            //empty cell
+            else
+            {
+                UpdateEntityTypeAndImageType(entityKey);
+                FindMovableCharacters(out moves);
+            }
+
+            UpdateIsMovable(moves);
+            CheckOnTheEndOfTheGame();
+        }
+
+        protected int RunMinMax()
         {
             throw new NotImplementedException();
         }

@@ -11,20 +11,21 @@ namespace BL
         protected int _x;
         protected int _y;
 
-        public int X
+        protected internal int X
         {
             get => _x;
-            protected internal set
+            set
             {
                 if (value < 0 || value > 6)
                     throw new IndexOutOfRangeException("Coordinate \"X\" must be between 0 and 6.");
                 _x = value;
             }
         }
-        public int Y
+
+        protected internal int Y
         {
             get => _y;
-            protected internal set
+            set
             {
                 if (value < 0 || value > 6)
                     throw new IndexOutOfRangeException("Coordinate \"Y\" must be between 0 and 6.");
@@ -32,11 +33,11 @@ namespace BL
             }
         }
 
-        public EntityType EntityType { get; protected internal set; }
+        protected internal EntityType EntityType { get; set; }
 
-        public ImageType ImageType { get; protected internal set; }
+        protected internal ImageType ImageType { get; set; }
 
-        public bool IsMovable { get; protected internal set; }
+        protected internal bool IsMovable { get; set; }
 
         protected internal Entity() { }
 
@@ -61,7 +62,7 @@ namespace BL
             };
         }
 
-        public string GetKey()
+        protected internal string GetKey()
         {
             return $"{X}{Y}";
         }
