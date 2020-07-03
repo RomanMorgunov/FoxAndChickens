@@ -61,15 +61,11 @@ namespace WinForms
         {
             _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode);
 
-            _game.OnChangeMovingStatus -= UpdateEnableStatusOfButtons;
-            _game.OnChangeImageType -= UpdateImagesAndChickenLeftStatus;
-            _game.OnWin -= GameOver;
-
             _game.OnChangeMovingStatus += UpdateEnableStatusOfButtons;
             _game.OnChangeImageType += UpdateImagesAndChickenLeftStatus;
             _game.OnWin += GameOver;
 
-            _game.CallUpdateEvents();
+            _game.InvokeUpdateEvents();
         }
 
         private void InitDictionaryConformityImages()

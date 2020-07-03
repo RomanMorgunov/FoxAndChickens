@@ -32,24 +32,21 @@ namespace BL
 
         public event EventHandler<WinEventArgs> OnWin;
 
-        public Game()
-        {
-            this.GameMode = GameMode.PlayerVsPlayer;
-            _fields = new List<Field>(64);
-            _fields.Add(new FieldPvP());
-        }
-
         public Game(PlayerPerson playerPerson, AI_level aiLevel, GameMode gameMode)
         {
             this.PlayerPerson = playerPerson;
             this.AI_Level = aiLevel;
             this.GameMode = gameMode;
-            _fields = new List<Field>();
+            _fields = new List<Field>(64);
 
             if (gameMode == GameMode.PlayerVsPlayer)
-                _fields.Add(new FieldPvP());
+                _fields.Add(new Field());
             else
-                _fields.Add(new FieldAI());
+            {
+                _fields.Add(new Field_MinMax(this.PlayerPerson, this.AI_Level));
+                LastField.EntityKey = string.Empty;
+                LastField.UpdateEntitiesProperty();
+            }
         }
 
         protected internal IDictionary<string, bool> GetDictionaryWithMovingStatus()
@@ -79,7 +76,7 @@ namespace BL
             return LastField.GetChickensCount() - 8;
         }
 
-        public void CallUpdateEvents()
+        public void InvokeUpdateEvents()
         {
             OnChangeMovingStatus?.Invoke(this, new MovingEventArgs(GetDictionaryWithMovingStatus()));
             OnChangeImageType?.Invoke(this, new ImageTypeEventArgs(GetDictionaryWithImageTypes(), GetLeftChickens()));
@@ -87,21 +84,30 @@ namespace BL
 
         public void Moving(string entityKey)
         {
+            EntityType movableEntity = LastField.GetEntityTypeOfMovingCharacters();
+
             //create a copy field
-            if (LastField.GetEntityTypeOfMovingCharacters() != EntityType.EmptyCell)
+            if (movableEntity != EntityType.EmptyCell)
             {
                 _fields.Add(LastField.Clone());
             }
 
             //Moving
-            LastField.UpdateEntitiesProperty(entityKey);
+            LastField.EntityKey = entityKey;
+            LastField.UpdateEntitiesProperty();
 
+            //game over
             if (LastField.GameOver)
             {
                 OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
             }
 
-            CallUpdateEvents();
+            //invoke events
+            if (movableEntity == EntityType.EmptyCell)
+            {
+                OnChangeImageType?.Invoke(this, new ImageTypeEventArgs(GetDictionaryWithImageTypes(), GetLeftChickens()));
+            }
+            OnChangeMovingStatus?.Invoke(this, new MovingEventArgs(GetDictionaryWithMovingStatus()));
         }
 
         public void CancelMove()
@@ -109,7 +115,7 @@ namespace BL
             if (_fields.Count > 1)
             {
                 _fields.RemoveAt(_fields.Count - 1);
-                CallUpdateEvents();
+                InvokeUpdateEvents();
             }
         }
     }
@@ -124,11 +130,5 @@ namespace BL
     {
         Fox,
         Chicken
-    }
-
-    public enum AI_level
-    {
-        Low,
-        Medium
     }
 }

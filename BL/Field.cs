@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public abstract class Field
+    public class Field
     {
         protected IDictionary<string, Entity> _entities;
         protected List<Dictionary<string, Entity>> _bestsWays;
 
-        public PlayerPerson LastPerson { get; protected internal set; }
+        protected internal string EntityKey { get; set; }
 
-        public bool GameOver { get; protected set; }
+        protected internal PlayerPerson LastPerson { get; protected set; }
+
+        protected internal bool GameOver { get; protected set; }
 
         protected internal Field()
         {
@@ -32,9 +34,50 @@ namespace BL
             _bestsWays = new List<Dictionary<string, Entity>>(8);
         }
 
-        protected internal abstract Field Clone();
+        protected internal virtual void UpdateEntitiesProperty()
+        {
+            if (string.IsNullOrEmpty(this.EntityKey))
+                throw new NullReferenceException("Property \"EntityKey\" is null or empty.");
 
-        protected internal abstract void UpdateEntitiesProperty(string entityKey);
+            Entity entity = _entities[this.EntityKey];
+            Dictionary<string, Entity> moves;
+
+            if (entity.IsMovable == false)
+                throw new ArgumentException("This is not a moving person.");
+
+            ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypesToEmptyCell();
+
+            if (entity.EntityType == EntityType.Chicken)
+            {
+                FindChickenWays(entity, out moves);
+                LastPerson = PlayerPerson.Chicken;
+            }
+            else if (entity.EntityType == EntityType.Fox)
+            {
+                FindFoxWays(entity, out moves);
+                LastPerson = PlayerPerson.Fox;
+            }
+            //empty cell
+            else
+            {
+                UpdateEntityTypeAndImageType(this.EntityKey);
+                FindMovableCharacters(out moves);
+            }
+
+            UpdateIsMovable(moves);
+            CheckOnTheEndOfTheGame();
+        }
+
+        protected internal virtual Field Clone()
+        {
+            Dictionary<string, Entity> entities = new Dictionary<string, Entity>(33);
+            foreach (var item in _entities)
+            {
+                entities.Add(item.Key, item.Value.Clone());
+            }
+
+            return new Field(entities);
+        }
 
         protected void InitEntities()
         {
@@ -167,7 +210,7 @@ namespace BL
             return item.Value.EntityType;
         }
 
-        protected void ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypeToEmptyCell()
+        protected void ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypesToEmptyCell()
         {
             foreach (var item in _entities.Values)
             {

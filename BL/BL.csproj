@@ -44,8 +44,7 @@
     <Compile Include="Field.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="FieldAI.cs" />
-    <Compile Include="FieldPvP.cs" />
+    <Compile Include="Field_MinMax.cs" />
     <Compile Include="ImageTypeEventArgs.cs" />
     <Compile Include="MovingEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

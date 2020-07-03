@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class WinEventArgs
+    public class WinEventArgs : EventArgs
     {
         public WinEventArgs(PlayerPerson playerPerson)
         {
