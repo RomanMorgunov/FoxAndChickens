@@ -3,53 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BL
 {
-    public class Game
+    sealed public class Game
     {
         //to determine size
-        protected List<Field> _fields;
+        private List<Field> _fields;
+        private ArtificialIntelligence _ai;
 
-        public PlayerPerson PlayerPerson { get; set; }
+        public PlayerPerson PlayerPerson { get; private set; }
+        public AI_level AI_Level { get; private set; }
+        public GameMode GameMode { get; private set; }
+        private Field LastField => _fields[_fields.Count - 1];
 
-        public AI_level AI_Level { get; set; }
-
-        public GameMode GameMode { get; set; }
-
-        protected Field LastField
-        {
-            get
-            {
-                return _fields[_fields.Count - 1];
-            }
-        }
-
-        //events
-        public event EventHandler<MovingEventArgs> OnChangeMovingStatus;
-
-        public event EventHandler<ImageTypeEventArgs> OnChangeImageType;
-
+        public event EventHandler<EntitiesPropertiesEventArgs> OnChangeEntitiesProperties;
         public event EventHandler<WinEventArgs> OnWin;
 
-        public Game(PlayerPerson playerPerson, AI_level aiLevel, GameMode gameMode)
+        public Game(PlayerPerson playerPerson, AI_level aiLevel, GameMode gameMode, 
+            EventHandler<EntitiesPropertiesEventArgs> onChangeEntitiesProperties,
+            EventHandler<WinEventArgs> onWin)
         {
             this.PlayerPerson = playerPerson;
             this.AI_Level = aiLevel;
             this.GameMode = gameMode;
             _fields = new List<Field>(64);
+            _fields.Add(new Field());
+            OnChangeEntitiesProperties += onChangeEntitiesProperties;
+            OnWin += onWin;
 
-            if (gameMode == GameMode.PlayerVsPlayer)
-                _fields.Add(new Field());
-            else
+            if (gameMode == GameMode.PlayerVsAI)
             {
-                _fields.Add(new Field_MinMax(this.PlayerPerson, this.AI_Level));
-                LastField.EntityKey = string.Empty;
-                LastField.UpdateEntitiesProperty();
+                _ai = new MinMaxAI(this.LastField.Clone(), this.PlayerPerson, this.AI_Level);
+                if (this.PlayerPerson == PlayerPerson.Fox)
+                {
+                    MovingForAI();
+                }
             }
+
+            InvokeUpdateEvents();
         }
 
-        protected internal IDictionary<string, bool> GetDictionaryWithMovingStatus()
+        private IDictionary<string, bool> GetDictionaryWithMovingStatus()
         {
             Dictionary<string, bool> pairs = new Dictionary<string, bool>(33);
             foreach (var item in LastField.GetEntities())
@@ -60,7 +56,7 @@ namespace BL
             return pairs;
         }
 
-        protected internal IDictionary<string, ImageType> GetDictionaryWithImageTypes()
+        private IDictionary<string, ImageType> GetDictionaryWithImageTypes()
         {
             Dictionary<string, ImageType> pairs = new Dictionary<string, ImageType>(33);
             foreach (var item in LastField.GetEntities())
@@ -71,43 +67,64 @@ namespace BL
             return pairs;
         }
 
-        protected internal int GetLeftChickens()
+        private int GetLeftChickens()
         {
             return LastField.GetChickensCount() - 8;
         }
 
         public void InvokeUpdateEvents()
         {
-            OnChangeMovingStatus?.Invoke(this, new MovingEventArgs(GetDictionaryWithMovingStatus()));
-            OnChangeImageType?.Invoke(this, new ImageTypeEventArgs(GetDictionaryWithImageTypes(), GetLeftChickens()));
+            OnChangeEntitiesProperties?.Invoke(this, new EntitiesPropertiesEventArgs(
+                    GetDictionaryWithMovingStatus(), GetDictionaryWithImageTypes(), GetLeftChickens()));
         }
 
         public void Moving(string entityKey)
         {
-            EntityType movableEntity = LastField.GetEntityTypeOfMovingCharacters();
+            var movingCharacterType = LastField.GetEntityTypeOfMovingCharacters();
+
+            if (this.GameMode == GameMode.PlayerVsAI && 
+                ((movingCharacterType == EntityType.Chicken && this.PlayerPerson == PlayerPerson.Fox) ||
+                (movingCharacterType == EntityType.Fox && this.PlayerPerson == PlayerPerson.Chicken)))
+            {
+                MovingForAI();
+                return;
+            }
 
             //create a copy field
-            if (movableEntity != EntityType.EmptyCell)
+            if (movingCharacterType != EntityType.EmptyCell)
             {
                 _fields.Add(LastField.Clone());
             }
 
             //Moving
-            LastField.EntityKey = entityKey;
-            LastField.UpdateEntitiesProperty();
+            LastField.UpdateEntitiesProperties(entityKey);
 
-            //game over
             if (LastField.GameOver)
             {
                 OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
             }
 
-            //invoke events
-            if (movableEntity == EntityType.EmptyCell)
+            InvokeUpdateEvents();
+        }
+
+        private void MovingForAI()
+        {
+            //create a copy field
+            _fields.Add(LastField.Clone());
+
+            //calculation move
+            string[] moves = _ai.RunAI();
+
+            //Moving
+            LastField.UpdateEntitiesProperties(moves[0]);
+            LastField.UpdateEntitiesProperties(moves[1]);
+
+            if (LastField.GameOver)
             {
-                OnChangeImageType?.Invoke(this, new ImageTypeEventArgs(GetDictionaryWithImageTypes(), GetLeftChickens()));
+                OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
             }
-            OnChangeMovingStatus?.Invoke(this, new MovingEventArgs(GetDictionaryWithMovingStatus()));
+
+            InvokeUpdateEvents();
         }
 
         public void CancelMove()
@@ -118,6 +135,13 @@ namespace BL
                 InvokeUpdateEvents();
             }
         }
+    }
+
+    //the value of an enumeration element is the level of recursion
+    public enum AI_level
+    {
+        Low = 1,
+        Medium = 2
     }
 
     public enum GameMode

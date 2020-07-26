@@ -4,25 +4,23 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace BL
 {
-    public class Field
+    internal class Field
     {
         protected IDictionary<string, Entity> _entities;
-        protected List<Dictionary<string, Entity>> _bestsWays;
 
-        protected internal string EntityKey { get; set; }
-
+        protected internal List<Dictionary<string, Entity>> BestsWays { get; private set; }
         protected internal PlayerPerson LastPerson { get; protected set; }
-
         protected internal bool GameOver { get; protected set; }
 
         protected internal Field()
         {
             //The field consist of 33 cells
             _entities = new Dictionary<string, Entity>(33);
-            _bestsWays = new List<Dictionary<string, Entity>>(8);
+            BestsWays = new List<Dictionary<string, Entity>>(8);
             GameOver = false;
             InitEntities();
         }
@@ -31,15 +29,15 @@ namespace BL
         {
             GameOver = false;
             _entities = new Dictionary<string, Entity>(entities);
-            _bestsWays = new List<Dictionary<string, Entity>>(8);
+            BestsWays = new List<Dictionary<string, Entity>>(8);
         }
 
-        protected internal virtual void UpdateEntitiesProperty()
+        protected internal virtual void UpdateEntitiesProperties(string entityKey)
         {
-            if (string.IsNullOrEmpty(this.EntityKey))
-                throw new NullReferenceException("Property \"EntityKey\" is null or empty.");
+            if (string.IsNullOrEmpty(entityKey))
+                throw new NullReferenceException("Variable \"entityKey\" is null or empty.");
 
-            Entity entity = _entities[this.EntityKey];
+            Entity entity = _entities[entityKey];
             Dictionary<string, Entity> moves;
 
             if (entity.IsMovable == false)
@@ -60,7 +58,7 @@ namespace BL
             //empty cell
             else
             {
-                UpdateEntityTypeAndImageType(this.EntityKey);
+                UpdateEntityTypeAndImageType(entityKey);
                 FindMovableCharacters(out moves);
             }
 
@@ -224,10 +222,10 @@ namespace BL
         protected void UpdateEntityTypeAndImageType(string entityKey)
         {
             Entity emptyCell = _entities[entityKey];
-            if (_bestsWays is null)
+            if (BestsWays is null)
                 throw new ArgumentException("Invalid killing list.");
 
-            var dict = _bestsWays.FirstOrDefault(d => d.Values.Last().Equals(emptyCell));
+            var dict = BestsWays.FirstOrDefault(d => d.Values.Last().Equals(emptyCell));
             if (dict is null)
                 throw new ArgumentException("Invalid entity key.");
             var array = dict.ToArray();
@@ -321,7 +319,7 @@ namespace BL
 
         protected void FindChickenWays(Entity entity, out Dictionary<string, Entity> moves)
         {
-            _bestsWays.Clear();
+            BestsWays.Clear();
             FindTheMovingWays(entity, out moves, PlayerPerson.Chicken);
 
             foreach (var item in moves)
@@ -329,19 +327,22 @@ namespace BL
                 var d = new Dictionary<string, Entity>(2);
                 d.Add(entity.GetKey(), entity);
                 d.Add(item.Key, item.Value);
-                _bestsWays.Add(d);
+                BestsWays.Add(d);
             }
         }
 
         protected void FindTheMovingWays(Entity entity, out Dictionary<string, Entity> moves, PlayerPerson playerPerson)
         {
+            //chicken can't move down
             int y_max = playerPerson == PlayerPerson.Chicken ? 1 : 2;
+
             moves = new Dictionary<string, Entity>(8);
 
             for (int y = -1; y < y_max; y++)
             {
                 for (int x = -1; x < 2; x++)
                 {
+                    //does not move
                     if (x == 0 && y == 0)
                         continue;
 
@@ -354,9 +355,17 @@ namespace BL
 
         protected void FindFoxWays(Entity entity, out Dictionary<string, Entity> moves)
         {
-            _bestsWays.Clear();
+            BestsWays.Clear();
+
             //finding biggests killing lists
-            BeginFindingKillingWays(entity, out List<Dictionary<string, Entity>> ways);
+            List<Dictionary<string, Entity>> ways = new List<Dictionary<string, Entity>>();
+            Dictionary<string, Entity> dict = new Dictionary<string, Entity>(5);
+            dict.Add(entity.GetKey(), entity);
+
+            FindingKillingWays(dict, in ways, new Point(0, 0));
+
+            //delete faulty ways
+            ways.RemoveAll(d => d.Count < 3);
 
             //killing list is empty
             if (ways.Count == 0)
@@ -368,103 +377,60 @@ namespace BL
                     var d = new Dictionary<string, Entity>(2);
                     d.Add(entity.GetKey(), entity);
                     d.Add(item.Key, item.Value);
-                    _bestsWays.Add(d);
+                    BestsWays.Add(d);
                 }
                 return;
             }
 
-            int maximum = ways[0].Count;
-
-            for (int i = 1; i < ways.Count; i++)
+            //find ways with max length and add it in BestWays
+            ways.Sort(delegate (Dictionary<string, Entity> x, Dictionary<string, Entity> y)
             {
-                if (maximum < ways[i].Count)
-                    maximum = ways[i].Count;
-            }
-
-            foreach (var item in ways)
-            {
-                if (item.Count == maximum)
-                    _bestsWays.Add(item);
-            }
+                if (x.Count == y.Count) return 0;
+                else if (x.Count > y.Count) return -1;
+                else return 1;
+            });
+            BestsWays.AddRange(ways.Where(d => d.Count == ways[0].Count));
 
             moves = new Dictionary<string, Entity>(4);
-            foreach (var item in _bestsWays)
+            foreach (var item in BestsWays)
             {
                 var pair = item.Last();
                 moves[pair.Key] = pair.Value;
             }
         }
 
-        protected void BeginFindingKillingWays(Entity entity, out List<Dictionary<string, Entity>> ways)
+        protected void FindingKillingWays(Dictionary<string, Entity> currentWay, 
+            in List<Dictionary<string, Entity>> allWays, Point lastShift)
         {
-            ways = new List<Dictionary<string, Entity>>();
-
-            for (int y = -1; y < 2; y++)
-            {
-                for (int x = -1; x < 2; x++)
-                {
-                    if (!(x == 0 || y == 0) || (x == 0 && y == 0))
-                        continue;
-
-                    string key = $"{entity.X + x}{entity.Y + y}";
-                    if (_entities.TryGetValue(key, out Entity cell) && cell.EntityType == EntityType.Chicken)
-                    {
-                        Dictionary<string, Entity> d = new Dictionary<string, Entity>(5);
-                        d.Add(entity.GetKey(), entity);
-                        d.Add(key, cell);
-                        FindKillingWays(d, ways);
-                    }
-                }
-            }
-
-            //delete faulty ways
-            ways.RemoveAll(d => d.Count < 3);
-        }
-
-        protected void FindKillingWays(Dictionary<string, Entity> entities, in List<Dictionary<string, Entity>> ways)
-        {
-            //finding shifts
-            var arr = entities.ToArray();
-            string penult = arr[arr.Length - 2].Key;
-            string last = arr[arr.Length - 1].Key;
-
-            int lastX = int.Parse(last[0].ToString());
-            int lastY = int.Parse(last[1].ToString());
-            int shiftX = lastX - int.Parse(penult[0].ToString());
-            int shiftY = lastY - int.Parse(penult[1].ToString());
-
-            //checking on a empty cell
-            string newKey = $"{lastX + shiftX}{lastY + shiftY}";
-            if (!(_entities.TryGetValue(newKey, out Entity newEntity) && newEntity.EntityType == EntityType.EmptyCell))
-            {
-                //end of killing way
-                entities.Remove(entities.Last().Key);
-                ways.Add(entities);
-                return;
-            }
-            entities.Add(newKey, newEntity);
-
             int count = 0;
-            for (int y = -1; y < 2; y++)
+
+            for (int shiftY = -1; shiftY < 2; shiftY++)
             {
-                for (int x = -1; x < 2; x++)
+                for (int shiftX = -1; shiftX < 2; shiftX++)
                 {
-                    if (!(x == 0 || y == 0) || (x == 0 && y == 0) || (x == -shiftX && y == -shiftY) /*prohibit back*/)
+                    if ((shiftX != 0 && shiftY != 0) || (shiftX == 0 && shiftY == 0) || 
+                        (lastShift.X == -shiftX && lastShift.Y == -shiftY) /*forbid to move back*/) 
                         continue;
 
-                    string key = $"{newEntity.X + x}{newEntity.Y + y}";
-                    if (_entities.TryGetValue(key, out Entity cell) && cell.EntityType == EntityType.Chicken)
+                    var cell = currentWay.Last().Value;
+                    string KeyCh = $"{cell.X + shiftX}{cell.Y + shiftY}";
+                    if (_entities.TryGetValue(KeyCh, out Entity chicken) && chicken.EntityType == EntityType.Chicken)
                     {
-                        entities.Add(key, cell);
-                        FindKillingWays(new Dictionary<string, Entity>(entities), ways);
-                        entities.Remove(key);
-                        count++;
+                        string keyEmpty = $"{cell.X + 2 * shiftX}{cell.Y + 2 * shiftY}";
+                        if (_entities.TryGetValue(keyEmpty, out Entity empty) && empty.EntityType == EntityType.EmptyCell)
+                        {
+                            count++;
+                            currentWay.Add(KeyCh, chicken);
+                            currentWay.Add(keyEmpty, empty);
+                            FindingKillingWays(new Dictionary<string, Entity>(currentWay), in allWays, 
+                                new Point(shiftX, shiftY));
+                        }
                     }
                 }
             }
 
             if (count == 0)
-                ways.Add(entities);
+                allWays.Add(currentWay);
         }
     }
 }

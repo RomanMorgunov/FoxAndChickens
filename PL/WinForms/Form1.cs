@@ -53,19 +53,19 @@ namespace WinForms
         }
 
         private void GameForm_Load(object sender, EventArgs e)
-        {
+        {            
             NewGame();
         }
 
         private void NewGame()
         {
-            _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode);
+            if (_game != null)
+            {
+                _game.OnChangeEntitiesProperties -= UpdateFieldDisplay;
+                _game.OnWin -= GameOver;
+            }
 
-            _game.OnChangeMovingStatus += UpdateEnableStatusOfButtons;
-            _game.OnChangeImageType += UpdateImagesAndChickenLeftStatus;
-            _game.OnWin += GameOver;
-
-            _game.InvokeUpdateEvents();
+            _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode, UpdateFieldDisplay, GameOver);
         }
 
         private void InitDictionaryConformityImages()
@@ -92,25 +92,6 @@ namespace WinForms
             }
         }
 
-        private void UpdateImagesAndChickenLeftStatus(object sender, ImageTypeEventArgs e)
-        {
-            var imageTypes = e.ImageTypePairs;
-            foreach (var pair in _conformityButtonWithHisIndex)
-            {
-                pair.Value.Image = _conformityImageTypeWithImage[imageTypes[pair.Key]];
-            }
-
-            UpdateChickensLeftLabel(e.ChickensLeftBeforeLosing);
-        }
-
-        private void UpdateEnableStatusOfButtons(object sender, MovingEventArgs e)
-        {
-            foreach (var pair in e.IsMovablePairs)
-            {
-                _conformityButtonWithHisIndex[pair.Key].Enabled = pair.Value;               
-            }
-        }
-
         private void CellButton_Click(object sender, EventArgs e)
         {
             countLabel.Text = (int.Parse(countLabel.Text) + 1).ToString();
@@ -126,15 +107,38 @@ namespace WinForms
             _game.CancelMove();
         }
 
-        //****************************interface begin
-        private void GameOver(object sender, WinEventArgs e)
+        private void UpdateFieldDisplay(object sender, EntitiesPropertiesEventArgs e)
         {
-            MessageBox.Show($"The {e.Winner} wons!!!", "Game Over", MessageBoxButtons.OK);
+            UpdateEnableStatusOfButtonsOnField(e.IsMovablePairs);
+            UpdateImagesOnField(e.ImageTypePairs);
+            UpdateChickensLeftLabel(e.ChickensLeftBeforeLosing);
+        }
+
+        private void UpdateEnableStatusOfButtonsOnField(IDictionary<string, bool> isMovablePairs)
+        {
+            foreach (var pair in isMovablePairs)
+            {
+                _conformityButtonWithHisIndex[pair.Key].Enabled = pair.Value;
+            }
+        }
+
+        private void UpdateImagesOnField(IDictionary<string, ImageType> imageTypePairs)
+        {
+            foreach (var pair in _conformityButtonWithHisIndex)
+            {
+                pair.Value.Image = _conformityImageTypeWithImage[imageTypePairs[pair.Key]];
+            }
         }
 
         private void UpdateChickensLeftLabel(int chickenLeft)
         {
             chickensLeftLbl.Text = $"To win, foxes need to eat {chickenLeft}";
+        }
+
+        //****************************interface begin
+        private void GameOver(object sender, WinEventArgs e)
+        {
+            MessageBox.Show($"The {e.Winner} wons!!!", "Game Over", MessageBoxButtons.OK);
         }
 
         private void NewGameTSMI_Click(object sender, EventArgs e)

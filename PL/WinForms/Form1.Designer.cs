@@ -315,6 +315,7 @@
             // cell45Btn
             // 
             this.cell45Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell45Btn.Enabled = false;
             this.cell45Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell45Btn.FlatAppearance.BorderSize = 2;
             this.cell45Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -330,6 +331,7 @@
             // cell35Btn
             // 
             this.cell35Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell35Btn.Enabled = false;
             this.cell35Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell35Btn.FlatAppearance.BorderSize = 2;
             this.cell35Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -345,6 +347,7 @@
             // cell25Btn
             // 
             this.cell25Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell25Btn.Enabled = false;
             this.cell25Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell25Btn.FlatAppearance.BorderSize = 2;
             this.cell25Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -360,6 +363,7 @@
             // cell64Btn
             // 
             this.cell64Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell64Btn.Enabled = false;
             this.cell64Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell64Btn.FlatAppearance.BorderSize = 2;
             this.cell64Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -375,6 +379,7 @@
             // cell54Btn
             // 
             this.cell54Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell54Btn.Enabled = false;
             this.cell54Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell54Btn.FlatAppearance.BorderSize = 2;
             this.cell54Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -391,6 +396,7 @@
             // cell44Btn
             // 
             this.cell44Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell44Btn.Enabled = false;
             this.cell44Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell44Btn.FlatAppearance.BorderSize = 2;
             this.cell44Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -406,6 +412,7 @@
             // cell34Btn
             // 
             this.cell34Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell34Btn.Enabled = false;
             this.cell34Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell34Btn.FlatAppearance.BorderSize = 2;
             this.cell34Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -421,6 +428,7 @@
             // cell24Btn
             // 
             this.cell24Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell24Btn.Enabled = false;
             this.cell24Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell24Btn.FlatAppearance.BorderSize = 2;
             this.cell24Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -436,6 +444,7 @@
             // cell14Btn
             // 
             this.cell14Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell14Btn.Enabled = false;
             this.cell14Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell14Btn.FlatAppearance.BorderSize = 2;
             this.cell14Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -451,6 +460,7 @@
             // cell04Btn
             // 
             this.cell04Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell04Btn.Enabled = false;
             this.cell04Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell04Btn.FlatAppearance.BorderSize = 2;
             this.cell04Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -466,6 +476,7 @@
             // cell63Btn
             // 
             this.cell63Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell63Btn.Enabled = false;
             this.cell63Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell63Btn.FlatAppearance.BorderSize = 2;
             this.cell63Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -481,6 +492,7 @@
             // cell53Btn
             // 
             this.cell53Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell53Btn.Enabled = false;
             this.cell53Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell53Btn.FlatAppearance.BorderSize = 2;
             this.cell53Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -496,6 +508,7 @@
             // cell43Btn
             // 
             this.cell43Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell43Btn.Enabled = false;
             this.cell43Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell43Btn.FlatAppearance.BorderSize = 2;
             this.cell43Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -511,6 +524,7 @@
             // cell33Btn
             // 
             this.cell33Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell33Btn.Enabled = false;
             this.cell33Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell33Btn.FlatAppearance.BorderSize = 2;
             this.cell33Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -526,6 +540,7 @@
             // cell23Btn
             // 
             this.cell23Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell23Btn.Enabled = false;
             this.cell23Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell23Btn.FlatAppearance.BorderSize = 2;
             this.cell23Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -541,6 +556,7 @@
             // cell13Btn
             // 
             this.cell13Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell13Btn.Enabled = false;
             this.cell13Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell13Btn.FlatAppearance.BorderSize = 2;
             this.cell13Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -556,6 +572,7 @@
             // cell03Btn
             // 
             this.cell03Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell03Btn.Enabled = false;
             this.cell03Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell03Btn.FlatAppearance.BorderSize = 2;
             this.cell03Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -571,6 +588,7 @@
             // cell62Btn
             // 
             this.cell62Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell62Btn.Enabled = false;
             this.cell62Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell62Btn.FlatAppearance.BorderSize = 2;
             this.cell62Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -586,6 +604,7 @@
             // cell52Btn
             // 
             this.cell52Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell52Btn.Enabled = false;
             this.cell52Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell52Btn.FlatAppearance.BorderSize = 2;
             this.cell52Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -601,7 +620,8 @@
             // cell42Btn
             // 
             this.cell42Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell42Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell42Btn.Enabled = false;
+            this.cell42Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell42Btn.FlatAppearance.BorderSize = 2;
             this.cell42Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell42Btn.Location = new System.Drawing.Point(387, 155);
@@ -616,7 +636,8 @@
             // cell32Btn
             // 
             this.cell32Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell32Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell32Btn.Enabled = false;
+            this.cell32Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell32Btn.FlatAppearance.BorderSize = 2;
             this.cell32Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell32Btn.Location = new System.Drawing.Point(291, 155);
@@ -631,7 +652,8 @@
             // cell22Btn
             // 
             this.cell22Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell22Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell22Btn.Enabled = false;
+            this.cell22Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell22Btn.FlatAppearance.BorderSize = 2;
             this.cell22Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell22Btn.Location = new System.Drawing.Point(195, 155);
@@ -646,6 +668,7 @@
             // cell12Btn
             // 
             this.cell12Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell12Btn.Enabled = false;
             this.cell12Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell12Btn.FlatAppearance.BorderSize = 2;
             this.cell12Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -661,6 +684,7 @@
             // cell02Btn
             // 
             this.cell02Btn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cell02Btn.Enabled = false;
             this.cell02Btn.FlatAppearance.BorderColor = System.Drawing.Color.Teal;
             this.cell02Btn.FlatAppearance.BorderSize = 2;
             this.cell02Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -676,7 +700,8 @@
             // cell41Btn
             // 
             this.cell41Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell41Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell41Btn.Enabled = false;
+            this.cell41Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell41Btn.FlatAppearance.BorderSize = 2;
             this.cell41Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell41Btn.Location = new System.Drawing.Point(387, 79);
@@ -691,7 +716,8 @@
             // cell31Btn
             // 
             this.cell31Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell31Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell31Btn.Enabled = false;
+            this.cell31Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell31Btn.FlatAppearance.BorderSize = 2;
             this.cell31Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell31Btn.Location = new System.Drawing.Point(291, 79);
@@ -706,7 +732,8 @@
             // cell21Btn
             // 
             this.cell21Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell21Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell21Btn.Enabled = false;
+            this.cell21Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell21Btn.FlatAppearance.BorderSize = 2;
             this.cell21Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell21Btn.Location = new System.Drawing.Point(195, 79);
@@ -721,7 +748,8 @@
             // cell40Btn
             // 
             this.cell40Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell40Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell40Btn.Enabled = false;
+            this.cell40Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell40Btn.FlatAppearance.BorderSize = 2;
             this.cell40Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell40Btn.Location = new System.Drawing.Point(387, 3);
@@ -736,7 +764,8 @@
             // cell30Btn
             // 
             this.cell30Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell30Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell30Btn.Enabled = false;
+            this.cell30Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell30Btn.FlatAppearance.BorderSize = 2;
             this.cell30Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell30Btn.Location = new System.Drawing.Point(291, 3);
@@ -751,7 +780,8 @@
             // cell20Btn
             // 
             this.cell20Btn.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cell20Btn.FlatAppearance.BorderColor = System.Drawing.Color.DarkMagenta;
+            this.cell20Btn.Enabled = false;
+            this.cell20Btn.FlatAppearance.BorderColor = System.Drawing.Color.Brown;
             this.cell20Btn.FlatAppearance.BorderSize = 2;
             this.cell20Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell20Btn.Location = new System.Drawing.Point(195, 3);

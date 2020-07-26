@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    public class Entity
+    internal class Entity
     {
         protected int _x;
         protected int _y;
@@ -34,9 +34,7 @@ namespace BL
         }
 
         protected internal EntityType EntityType { get; set; }
-
         protected internal ImageType ImageType { get; set; }
-
         protected internal bool IsMovable { get; set; }
 
         protected internal Entity() { }
@@ -75,6 +73,15 @@ namespace BL
                    EntityType == entity.EntityType &&
                    ImageType == entity.ImageType &&
                    IsMovable == entity.IsMovable;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -1038328219;
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            hashCode = hashCode * -1521134295 + EntityType.GetHashCode();
+            return hashCode;
         }
     }
 

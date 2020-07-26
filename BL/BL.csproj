@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,11 +45,10 @@
     <Compile Include="Field.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="Field_MinMax.cs" />
-    <Compile Include="ImageTypeEventArgs.cs" />
-    <Compile Include="MovingEventArgs.cs" />
+    <Compile Include="ArtificialIntelligence.cs" />
+    <Compile Include="MinMaxAI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinEventArgs.cs" />
+    <Compile Include="EventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
