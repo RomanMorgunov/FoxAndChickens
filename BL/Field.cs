@@ -413,17 +413,19 @@ namespace BL
                         continue;
 
                     var cell = currentWay.Last().Value;
-                    string KeyCh = $"{cell.X + shiftX}{cell.Y + shiftY}";
-                    if (_entities.TryGetValue(KeyCh, out Entity chicken) && chicken.EntityType == EntityType.Chicken)
+                    string keyCh = $"{cell.X + shiftX}{cell.Y + shiftY}";
+                    if (_entities.TryGetValue(keyCh, out Entity chicken) && chicken.EntityType == EntityType.Chicken)
                     {
                         string keyEmpty = $"{cell.X + 2 * shiftX}{cell.Y + 2 * shiftY}";
                         if (_entities.TryGetValue(keyEmpty, out Entity empty) && empty.EntityType == EntityType.EmptyCell)
                         {
                             count++;
-                            currentWay.Add(KeyCh, chicken);
+                            currentWay.Add(keyCh, chicken);
                             currentWay.Add(keyEmpty, empty);
                             FindingKillingWays(new Dictionary<string, Entity>(currentWay), in allWays, 
                                 new Point(shiftX, shiftY));
+                            currentWay.Remove(keyEmpty);
+                            currentWay.Remove(keyCh);
                         }
                     }
                 }

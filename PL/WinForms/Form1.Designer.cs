@@ -281,6 +281,7 @@
             this.cell46Btn.Tag = "46";
             this.cell46Btn.UseVisualStyleBackColor = true;
             this.cell46Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell46Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell36Btn
             // 
@@ -296,6 +297,7 @@
             this.cell36Btn.Tag = "36";
             this.cell36Btn.UseVisualStyleBackColor = true;
             this.cell36Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell36Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell26Btn
             // 
@@ -311,6 +313,7 @@
             this.cell26Btn.Tag = "26";
             this.cell26Btn.UseVisualStyleBackColor = true;
             this.cell26Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell26Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell45Btn
             // 
@@ -327,6 +330,7 @@
             this.cell45Btn.Tag = "45";
             this.cell45Btn.UseVisualStyleBackColor = true;
             this.cell45Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell45Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell35Btn
             // 
@@ -343,6 +347,7 @@
             this.cell35Btn.Tag = "35";
             this.cell35Btn.UseVisualStyleBackColor = true;
             this.cell35Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell35Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell25Btn
             // 
@@ -359,6 +364,7 @@
             this.cell25Btn.Tag = "25";
             this.cell25Btn.UseVisualStyleBackColor = true;
             this.cell25Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell25Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell64Btn
             // 
@@ -375,6 +381,7 @@
             this.cell64Btn.Tag = "64";
             this.cell64Btn.UseVisualStyleBackColor = true;
             this.cell64Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell64Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell54Btn
             // 
@@ -392,6 +399,7 @@
             this.cell54Btn.Tag = "54";
             this.cell54Btn.UseVisualStyleBackColor = true;
             this.cell54Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell54Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell44Btn
             // 
@@ -408,6 +416,7 @@
             this.cell44Btn.Tag = "44";
             this.cell44Btn.UseVisualStyleBackColor = true;
             this.cell44Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell44Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell34Btn
             // 
@@ -424,6 +433,7 @@
             this.cell34Btn.Tag = "34";
             this.cell34Btn.UseVisualStyleBackColor = true;
             this.cell34Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell34Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell24Btn
             // 
@@ -440,6 +450,7 @@
             this.cell24Btn.Tag = "24";
             this.cell24Btn.UseVisualStyleBackColor = true;
             this.cell24Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell24Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell14Btn
             // 
@@ -456,6 +467,7 @@
             this.cell14Btn.Tag = "14";
             this.cell14Btn.UseVisualStyleBackColor = true;
             this.cell14Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell14Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell04Btn
             // 
@@ -472,6 +484,7 @@
             this.cell04Btn.Tag = "04";
             this.cell04Btn.UseVisualStyleBackColor = true;
             this.cell04Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell04Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell63Btn
             // 
@@ -488,6 +501,7 @@
             this.cell63Btn.Tag = "63";
             this.cell63Btn.UseVisualStyleBackColor = true;
             this.cell63Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell63Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell53Btn
             // 
@@ -504,6 +518,7 @@
             this.cell53Btn.Tag = "53";
             this.cell53Btn.UseVisualStyleBackColor = true;
             this.cell53Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell53Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell43Btn
             // 
@@ -520,6 +535,7 @@
             this.cell43Btn.Tag = "43";
             this.cell43Btn.UseVisualStyleBackColor = true;
             this.cell43Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell43Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell33Btn
             // 
@@ -536,6 +552,7 @@
             this.cell33Btn.Tag = "33";
             this.cell33Btn.UseVisualStyleBackColor = true;
             this.cell33Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell33Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell23Btn
             // 
@@ -552,6 +569,7 @@
             this.cell23Btn.Tag = "23";
             this.cell23Btn.UseVisualStyleBackColor = true;
             this.cell23Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell23Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell13Btn
             // 
@@ -568,6 +586,7 @@
             this.cell13Btn.Tag = "13";
             this.cell13Btn.UseVisualStyleBackColor = true;
             this.cell13Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell13Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell03Btn
             // 
@@ -584,6 +603,7 @@
             this.cell03Btn.Tag = "03";
             this.cell03Btn.UseVisualStyleBackColor = true;
             this.cell03Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell03Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell62Btn
             // 
@@ -600,6 +620,7 @@
             this.cell62Btn.Tag = "62";
             this.cell62Btn.UseVisualStyleBackColor = true;
             this.cell62Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell62Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell52Btn
             // 
@@ -616,6 +637,7 @@
             this.cell52Btn.Tag = "52";
             this.cell52Btn.UseVisualStyleBackColor = true;
             this.cell52Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell52Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell42Btn
             // 
@@ -632,6 +654,7 @@
             this.cell42Btn.Tag = "42";
             this.cell42Btn.UseVisualStyleBackColor = true;
             this.cell42Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell42Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell32Btn
             // 
@@ -648,6 +671,7 @@
             this.cell32Btn.Tag = "32";
             this.cell32Btn.UseVisualStyleBackColor = true;
             this.cell32Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell32Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell22Btn
             // 
@@ -664,6 +688,7 @@
             this.cell22Btn.Tag = "22";
             this.cell22Btn.UseVisualStyleBackColor = true;
             this.cell22Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell22Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell12Btn
             // 
@@ -680,6 +705,7 @@
             this.cell12Btn.Tag = "12";
             this.cell12Btn.UseVisualStyleBackColor = true;
             this.cell12Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell12Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell02Btn
             // 
@@ -696,6 +722,7 @@
             this.cell02Btn.Tag = "02";
             this.cell02Btn.UseVisualStyleBackColor = true;
             this.cell02Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell02Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell41Btn
             // 
@@ -712,6 +739,7 @@
             this.cell41Btn.Tag = "41";
             this.cell41Btn.UseVisualStyleBackColor = true;
             this.cell41Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell41Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell31Btn
             // 
@@ -728,6 +756,7 @@
             this.cell31Btn.Tag = "31";
             this.cell31Btn.UseVisualStyleBackColor = true;
             this.cell31Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell31Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell21Btn
             // 
@@ -744,6 +773,7 @@
             this.cell21Btn.Tag = "21";
             this.cell21Btn.UseVisualStyleBackColor = true;
             this.cell21Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell21Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell40Btn
             // 
@@ -760,6 +790,7 @@
             this.cell40Btn.Tag = "40";
             this.cell40Btn.UseVisualStyleBackColor = true;
             this.cell40Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell40Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell30Btn
             // 
@@ -776,6 +807,7 @@
             this.cell30Btn.Tag = "30";
             this.cell30Btn.UseVisualStyleBackColor = true;
             this.cell30Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell30Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // cell20Btn
             // 
@@ -792,6 +824,7 @@
             this.cell20Btn.Tag = "20";
             this.cell20Btn.UseVisualStyleBackColor = true;
             this.cell20Btn.Click += new System.EventHandler(this.CellButton_Click);
+            this.cell20Btn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameFieldTLP_MouseDown);
             // 
             // toolStrip
             // 
