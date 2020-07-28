@@ -12,27 +12,115 @@ namespace BL
     {
         protected IDictionary<string, Entity> _entities;
 
-        protected internal List<Dictionary<string, Entity>> BestsWays { get; private set; }
-        protected internal PlayerPerson LastPerson { get; protected set; }
         protected internal bool GameOver { get; protected set; }
+        protected internal PlayerPerson LastPerson { get; protected set; }
+        protected internal List<Dictionary<string, Entity>> BestsWays { get; protected set; }
 
         protected internal Field()
         {
-            //The field consist of 33 cells
-            _entities = new Dictionary<string, Entity>(33);
-            BestsWays = new List<Dictionary<string, Entity>>(8);
             GameOver = false;
+            LastPerson = PlayerPerson.Fox;            
+            _entities = new Dictionary<string, Entity>(33);       //The field consist of 33 cells
+            BestsWays = new List<Dictionary<string, Entity>>(8);
+
             InitEntities();
+            InitMovablePersons();
         }
 
-        protected Field(IDictionary<string, Entity> entities)
+        protected Field(IDictionary<string, Entity> entities, PlayerPerson lastPerson, bool gameOver, 
+            List<Dictionary<string, Entity>> bestWays)
         {
-            GameOver = false;
+            GameOver = gameOver;
+            BestsWays = bestWays;
+            LastPerson = lastPerson;
             _entities = new Dictionary<string, Entity>(entities);
-            BestsWays = new List<Dictionary<string, Entity>>(8);
         }
 
-        protected internal virtual void UpdateEntitiesProperties(string entityKey)
+        protected internal Field Clone(bool isCopyBestWays = false)
+        {
+            Dictionary<string, Entity> entities = new Dictionary<string, Entity>(33);
+            foreach (var item in _entities)
+            {
+                entities.Add(item.Key, item.Value.Clone());
+            }
+
+            List<Dictionary<string, Entity>> bestWays = new List<Dictionary<string, Entity>>(8);
+            if (isCopyBestWays)
+            {
+                foreach (var way in this.BestsWays)
+                {
+                    Dictionary<string, Entity> copyOfTheWay = new Dictionary<string, Entity>(2);
+                    foreach (var item in way)
+                    {
+                        copyOfTheWay.Add(item.Key, item.Value.Clone());
+                    }
+                    bestWays.Add(copyOfTheWay);
+                }
+            }
+
+            return new Field(entities, this.LastPerson, GameOver, bestWays);
+        }
+
+        protected void InitEntities()
+        {
+            for (int y = 0; y < 2; y++)
+            {
+                for (int x = 2; x < 5; x++)
+                {
+                    Entity entity = new Entity(x, y, EntityType.EmptyCell, ImageType.EmptyCellImage, false);
+                    _entities.Add(entity.GetKey(), entity);
+                }
+            }
+
+            for (int y = 2; y < 4; y++)
+            {
+                for (int x = 0; x < 7; x++)
+                {
+                    Entity entity = new Entity(x, y, EntityType.EmptyCell, ImageType.EmptyCellImage, false);
+
+                    if (x == 3 && y == 2)
+                    {
+                        entity.EntityType = EntityType.Fox;
+                        entity.ImageType = ImageType.FoxImage;
+                    }
+
+                    _entities.Add(entity.GetKey(), entity);
+                }
+            }
+
+            for (int y = 4; y < 5; y++)
+            {
+                for (int x = 0; x < 7; x++)
+                {
+                    Entity entity = new Entity(x, y, EntityType.Chicken, ImageType.ChickenImage, true);
+                    _entities.Add(entity.GetKey(), entity);
+                }
+            }
+
+            for (int y = 5; y < 7; y++)
+            {
+                for (int x = 2; x < 5; x++)
+                {
+                    Entity entity = new Entity(x, y, EntityType.Chicken, ImageType.ChickenImage, false);
+                    _entities.Add(entity.GetKey(), entity);
+                }
+            }
+        }
+
+        //initializes BestsWays for AI
+        protected void InitMovablePersons()
+        {
+            Dictionary<string, Entity> moves;
+            FindMovableCharacters(out moves);
+            UpdateIsMovable(moves);
+        }
+
+        protected internal IDictionary<string, Entity> GetEntities()
+        {
+            return _entities;
+        }
+
+        protected internal void UpdateEntitiesProperties(string entityKey)
         {
             if (string.IsNullOrEmpty(entityKey))
                 throw new NullReferenceException("Variable \"entityKey\" is null or empty.");
@@ -43,7 +131,7 @@ namespace BL
             if (entity.IsMovable == false)
                 throw new ArgumentException("This is not a moving person.");
 
-            ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypesToEmptyCell();
+            ConvertDeadChickenAndTrackAndStartPositionOfMovementImageTypesToEmptyCell();
 
             if (entity.EntityType == EntityType.Chicken)
             {
@@ -64,95 +152,6 @@ namespace BL
 
             UpdateIsMovable(moves);
             CheckOnTheEndOfTheGame();
-        }
-
-        protected internal virtual Field Clone()
-        {
-            Dictionary<string, Entity> entities = new Dictionary<string, Entity>(33);
-            foreach (var item in _entities)
-            {
-                entities.Add(item.Key, item.Value.Clone());
-            }
-
-            return new Field(entities);
-        }
-
-        protected void InitEntities()
-        {
-            for (int y = 0; y < 2; y++)
-            {
-                for (int x = 2; x < 5; x++)
-                {
-                    Entity entity = new Entity()
-                    {
-                        X = x,
-                        Y = y,
-                        EntityType = EntityType.EmptyCell,
-                        ImageType = ImageType.EmptyCellImage
-                    };
-                    _entities.Add(entity.GetKey(), entity);
-                }
-            }
-
-            for (int y = 2; y < 4; y++)
-            {
-                for (int x = 0; x < 7; x++)
-                {
-                    Entity entity = new Entity()
-                    {
-                        X = x,
-                        Y = y,
-                        EntityType = EntityType.EmptyCell,
-                        ImageType = ImageType.EmptyCellImage
-                    };
-
-                    if (x == 3 && y == 2)
-                    {
-                        entity.EntityType = EntityType.Fox;
-                        entity.ImageType = ImageType.FoxImage;
-                    }
-
-                    _entities.Add(entity.GetKey(), entity);
-                }
-            }
-
-            for (int y = 4; y < 5; y++)
-            {
-                for (int x = 0; x < 7; x++)
-                {
-                    Entity entity = new Entity()
-                    {
-                        X = x,
-                        Y = y,
-                        IsMovable = true,
-                        EntityType = EntityType.Chicken,
-                        ImageType = ImageType.ChickenImage
-                    };
-
-                    _entities.Add(entity.GetKey(), entity);
-                }
-            }
-
-            for (int y = 5; y < 7; y++)
-            {
-                for (int x = 2; x < 5; x++)
-                {
-                    Entity entity = new Entity()
-                    {
-                        X = x,
-                        Y = y,
-                        EntityType = EntityType.Chicken,
-                        ImageType = ImageType.ChickenImage
-                    };
-
-                    _entities.Add(entity.GetKey(), entity);
-                }
-            }
-        }
-
-        protected internal IDictionary<string, Entity> GetEntities()
-        {
-            return _entities;
         }
 
         protected void UpdateIsMovable(Dictionary<string, Entity> moves)
@@ -183,6 +182,7 @@ namespace BL
                 }
                 if (count != 9)
                 {
+                    //if anybody can move
                     if (!(_entities.Values.All(e => e.IsMovable == false)))
                     {
                         GameOver = false;
@@ -208,7 +208,7 @@ namespace BL
             return item.Value.EntityType;
         }
 
-        protected void ConvertDeadChickenTrackAndAndStartPositionOfMovementImageTypesToEmptyCell()
+        protected void ConvertDeadChickenAndTrackAndStartPositionOfMovementImageTypesToEmptyCell()
         {
             foreach (var item in _entities.Values)
             {
@@ -280,7 +280,7 @@ namespace BL
 
         protected void FindMovableCharacters(out Dictionary<string, Entity> availableCharacters)
         {
-            availableCharacters = new Dictionary<string, Entity>();
+            availableCharacters = new Dictionary<string, Entity>(14);
 
             //if the next move per fox
             if (LastPerson == PlayerPerson.Chicken)
@@ -299,6 +299,8 @@ namespace BL
             }
             else
             {
+                BestsWays.Clear();
+
                 int countOfChikens = 0;
                 foreach (var item in _entities.Values)
                 {
@@ -309,7 +311,7 @@ namespace BL
                     if (item.EntityType == EntityType.Chicken)
                     {
                         countOfChikens++;
-                        FindChickenWays(item, out Dictionary<string, Entity> moves);
+                        FindChickenWays(item, out Dictionary<string, Entity> moves, clearBestWays: false);
                         if (moves.Count != 0)
                             availableCharacters.Add(item.GetKey(), item);
                     }
@@ -317,9 +319,10 @@ namespace BL
             }
         }
 
-        protected void FindChickenWays(Entity entity, out Dictionary<string, Entity> moves)
+        protected void FindChickenWays(Entity entity, out Dictionary<string, Entity> moves, bool clearBestWays = true)
         {
-            BestsWays.Clear();
+            if (clearBestWays) BestsWays.Clear();
+
             FindTheMovingWays(entity, out moves, PlayerPerson.Chicken);
 
             foreach (var item in moves)
@@ -433,6 +436,20 @@ namespace BL
 
             if (count == 0)
                 allWays.Add(currentWay);
+        }
+
+        protected internal int GetCountOfChickensOnWinningPosition()
+        {
+            int count = 0;
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 2; x < 5; x++)
+                {
+                    if (_entities[$"{x}{y}"].EntityType == EntityType.Chicken)
+                        count++;
+                }
+            }
+            return count;
         }
     }
 }

@@ -39,25 +39,18 @@ namespace BL
 
         protected internal Entity() { }
 
-        protected internal Entity(int x, int y, EntityType entityType, ImageType pictureType, bool isMovable)
+        protected internal Entity(int x, int y, EntityType entityType, ImageType imageType, bool isMovable)
         {
             X = x;
             Y = y;
             this.EntityType = entityType;
-            this.ImageType = ImageType;
+            this.ImageType = imageType;
             this.IsMovable = isMovable;
         }
 
         protected internal Entity Clone()
         {
-            return new Entity()
-            {
-                X = _x,
-                Y = _y,
-                EntityType = this.EntityType,
-                ImageType = this.ImageType,
-                IsMovable = this.IsMovable
-            };
+            return new Entity(X, Y, this.EntityType, this.ImageType, IsMovable);
         }
 
         protected internal string GetKey()

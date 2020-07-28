@@ -66,6 +66,7 @@ namespace WinForms
             }
 
             _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode, UpdateFieldDisplay, GameOver);
+            countLabel.Text = "0";
         }
 
         private void InitDictionaryConformityImages()
@@ -219,8 +220,8 @@ namespace WinForms
                 if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", "AI level change",
                    MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    this.lowLevelTSMI.Checked = false;
-                    this.mediumLevelTSMI.Checked = true;
+                    this.lowLevelTSMI.Checked = true;
+                    this.mediumLevelTSMI.Checked = false;
                     NewGame();
                 }
             }
@@ -229,8 +230,8 @@ namespace WinForms
                 if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", "AI level change",
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    this.lowLevelTSMI.Checked = true;
-                    this.mediumLevelTSMI.Checked = false;
+                    this.lowLevelTSMI.Checked = false;
+                    this.mediumLevelTSMI.Checked = true;
                     NewGame();
                 }
             }

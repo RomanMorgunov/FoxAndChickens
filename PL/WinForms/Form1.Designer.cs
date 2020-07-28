@@ -122,18 +122,18 @@
             // playerVsPlayerTSMI
             // 
             this.playerVsPlayerTSMI.BackColor = System.Drawing.Color.DarkGray;
-            this.playerVsPlayerTSMI.Checked = true;
-            this.playerVsPlayerTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playerVsPlayerTSMI.Name = "playerVsPlayerTSMI";
-            this.playerVsPlayerTSMI.Size = new System.Drawing.Size(155, 22);
+            this.playerVsPlayerTSMI.Size = new System.Drawing.Size(180, 22);
             this.playerVsPlayerTSMI.Text = "Player vs Player";
             this.playerVsPlayerTSMI.Click += new System.EventHandler(this.GameModeChanged);
             // 
             // playerVsAiTSMI
             // 
             this.playerVsAiTSMI.BackColor = System.Drawing.Color.DarkGray;
+            this.playerVsAiTSMI.Checked = true;
+            this.playerVsAiTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playerVsAiTSMI.Name = "playerVsAiTSMI";
-            this.playerVsAiTSMI.Size = new System.Drawing.Size(155, 22);
+            this.playerVsAiTSMI.Size = new System.Drawing.Size(180, 22);
             this.playerVsAiTSMI.Text = "Player vs AI";
             this.playerVsAiTSMI.Click += new System.EventHandler(this.GameModeChanged);
             // 
@@ -142,7 +142,6 @@
             this.personTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.chickenTSMI,
             this.foxTSMI});
-            this.personTSMI.Enabled = false;
             this.personTSMI.ForeColor = System.Drawing.Color.Maroon;
             this.personTSMI.Name = "personTSMI";
             this.personTSMI.Size = new System.Drawing.Size(105, 20);
@@ -154,7 +153,7 @@
             this.chickenTSMI.Checked = true;
             this.chickenTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chickenTSMI.Name = "chickenTSMI";
-            this.chickenTSMI.Size = new System.Drawing.Size(122, 22);
+            this.chickenTSMI.Size = new System.Drawing.Size(180, 22);
             this.chickenTSMI.Text = "Chickens";
             this.chickenTSMI.Click += new System.EventHandler(this.GamePersonChanged);
             // 
@@ -162,7 +161,7 @@
             // 
             this.foxTSMI.BackColor = System.Drawing.Color.DarkGray;
             this.foxTSMI.Name = "foxTSMI";
-            this.foxTSMI.Size = new System.Drawing.Size(122, 22);
+            this.foxTSMI.Size = new System.Drawing.Size(180, 22);
             this.foxTSMI.Text = "Fox";
             this.foxTSMI.Click += new System.EventHandler(this.GamePersonChanged);
             // 
@@ -171,7 +170,6 @@
             this.ai_LevelTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lowLevelTSMI,
             this.mediumLevelTSMI});
-            this.ai_LevelTSMI.Enabled = false;
             this.ai_LevelTSMI.ForeColor = System.Drawing.Color.Maroon;
             this.ai_LevelTSMI.Name = "ai_LevelTSMI";
             this.ai_LevelTSMI.Size = new System.Drawing.Size(57, 20);
@@ -183,7 +181,7 @@
             this.lowLevelTSMI.Checked = true;
             this.lowLevelTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.lowLevelTSMI.Name = "lowLevelTSMI";
-            this.lowLevelTSMI.Size = new System.Drawing.Size(119, 22);
+            this.lowLevelTSMI.Size = new System.Drawing.Size(180, 22);
             this.lowLevelTSMI.Text = "Low";
             this.lowLevelTSMI.Click += new System.EventHandler(this.AI_LevelChanged);
             // 
@@ -191,7 +189,7 @@
             // 
             this.mediumLevelTSMI.BackColor = System.Drawing.Color.DarkGray;
             this.mediumLevelTSMI.Name = "mediumLevelTSMI";
-            this.mediumLevelTSMI.Size = new System.Drawing.Size(119, 22);
+            this.mediumLevelTSMI.Size = new System.Drawing.Size(180, 22);
             this.mediumLevelTSMI.Text = "Medium";
             this.mediumLevelTSMI.Click += new System.EventHandler(this.AI_LevelChanged);
             // 

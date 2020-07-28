@@ -35,7 +35,7 @@ namespace BL
 
             if (gameMode == GameMode.PlayerVsAI)
             {
-                _ai = new MinMaxAI(this.LastField.Clone(), this.PlayerPerson, this.AI_Level);
+                _ai = new MinMaxAI(this.PlayerPerson, this.AI_Level);
                 if (this.PlayerPerson == PlayerPerson.Fox)
                 {
                     MovingForAI();
@@ -82,14 +82,6 @@ namespace BL
         {
             var movingCharacterType = LastField.GetEntityTypeOfMovingCharacters();
 
-            if (this.GameMode == GameMode.PlayerVsAI && 
-                ((movingCharacterType == EntityType.Chicken && this.PlayerPerson == PlayerPerson.Fox) ||
-                (movingCharacterType == EntityType.Fox && this.PlayerPerson == PlayerPerson.Chicken)))
-            {
-                MovingForAI();
-                return;
-            }
-
             //create a copy field
             if (movingCharacterType != EntityType.EmptyCell)
             {
@@ -99,21 +91,25 @@ namespace BL
             //Moving
             LastField.UpdateEntitiesProperties(entityKey);
 
+            InvokeUpdateEvents();
+
             if (LastField.GameOver)
             {
                 OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
             }
-
-            InvokeUpdateEvents();
+            else
+            {
+                if (this.GameMode == GameMode.PlayerVsAI && movingCharacterType == EntityType.EmptyCell)
+                {
+                    MovingForAI();
+                }
+            }
         }
 
         private void MovingForAI()
         {
-            //create a copy field
-            _fields.Add(LastField.Clone());
-
             //calculation move
-            string[] moves = _ai.RunAI();
+            string[] moves = _ai.RunAI(this.LastField.Clone(isCopyBestWays: true));
 
             //Moving
             LastField.UpdateEntitiesProperties(moves[0]);
@@ -135,13 +131,6 @@ namespace BL
                 InvokeUpdateEvents();
             }
         }
-    }
-
-    //the value of an enumeration element is the level of recursion
-    public enum AI_level
-    {
-        Low = 1,
-        Medium = 2
     }
 
     public enum GameMode
