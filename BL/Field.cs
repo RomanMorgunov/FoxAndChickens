@@ -438,18 +438,9 @@ namespace BL
                 allWays.Add(currentWay);
         }
 
-        protected internal int GetCountOfChickensOnWinningPosition()
+        protected internal EntityType GetEntityType(int x, int y)
         {
-            int count = 0;
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 2; x < 5; x++)
-                {
-                    if (_entities[$"{x}{y}"].EntityType == EntityType.Chicken)
-                        count++;
-                }
-            }
-            return count;
+            return _entities[$"{x}{y}"].EntityType;
         }
     }
 }

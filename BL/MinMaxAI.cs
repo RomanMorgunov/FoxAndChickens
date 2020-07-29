@@ -20,14 +20,17 @@ namespace BL
 
         protected internal override string[] RunAI(Field field)
         {
-            RunMinMax(in field, 0, int.MinValue, int.MaxValue);
+            RunMinMax(in field, 0, MIN_EVALUATION_VALUE - 1, MAX_EVALUATION_VALUE + 1);
             return _aiMoves;
         }
 
         private int RunMinMax(in Field initialField, int recursiveLevel, int alpha, int beta)
         {
+            //if the AI plays as a fox
+            int coefficient = this._playerPerson == PlayerPerson.Chicken ? 1 : 0;
+
             //at the last level of the tree, return the value of the heuristic function
-            if (recursiveLevel >= ((int)_aiLevel) * 2)
+            if (recursiveLevel >= ((int)_aiLevel) * 2 + coefficient)
                 return GetHeuristicEvaluation(initialField);
 
             //if GameOver
@@ -53,7 +56,7 @@ namespace BL
 
                 //if it is better than everyone that was before this - remember that it is the best
                 //foxes minimize evaluation, chicken - maximize
-                if (currentEvaluation > bestEvaluation && initialField.LastPerson == PlayerPerson.Fox ||     //for chicken
+                if (currentEvaluation >= bestEvaluation && initialField.LastPerson == PlayerPerson.Fox ||    //for chicken
                     currentEvaluation < bestEvaluation && initialField.LastPerson == PlayerPerson.Chicken || //for fox
                     bestMove[0] == null)
                 {
@@ -111,7 +114,30 @@ namespace BL
             int evaluation = 0;
 
             evaluation += 10 * field.GetChickensCount();
-            evaluation += 11 * field.GetCountOfChickensOnWinningPosition();
+            for (int y = 2; y < 6; y++)
+            {
+                for (int x = 0; x < 7; x++)
+                {
+                    if (y == 5 && (x != 2 && x != 3 && x != 4)) 
+                        continue;
+
+                    //winning position
+                    if (y == 2 && (x == 2 || x == 3 || x == 4))
+                        continue;
+
+                    if (field.GetEntityType(x, y) == EntityType.Chicken)
+                        evaluation += 6 - y;
+                }
+            }
+
+            for (int y = 0; y < 3; y++)
+            {
+                for (int x = 2; x < 5; x++)
+                {
+                    if (field.GetEntityType(x, y) == EntityType.Chicken)
+                        evaluation += 7 - y;
+                }
+            }
 
             return evaluation;
         }

@@ -123,7 +123,7 @@
             // 
             this.playerVsPlayerTSMI.BackColor = System.Drawing.Color.DarkGray;
             this.playerVsPlayerTSMI.Name = "playerVsPlayerTSMI";
-            this.playerVsPlayerTSMI.Size = new System.Drawing.Size(180, 22);
+            this.playerVsPlayerTSMI.Size = new System.Drawing.Size(155, 22);
             this.playerVsPlayerTSMI.Text = "Player vs Player";
             this.playerVsPlayerTSMI.Click += new System.EventHandler(this.GameModeChanged);
             // 
@@ -133,7 +133,7 @@
             this.playerVsAiTSMI.Checked = true;
             this.playerVsAiTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.playerVsAiTSMI.Name = "playerVsAiTSMI";
-            this.playerVsAiTSMI.Size = new System.Drawing.Size(180, 22);
+            this.playerVsAiTSMI.Size = new System.Drawing.Size(155, 22);
             this.playerVsAiTSMI.Text = "Player vs AI";
             this.playerVsAiTSMI.Click += new System.EventHandler(this.GameModeChanged);
             // 
@@ -153,7 +153,7 @@
             this.chickenTSMI.Checked = true;
             this.chickenTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chickenTSMI.Name = "chickenTSMI";
-            this.chickenTSMI.Size = new System.Drawing.Size(180, 22);
+            this.chickenTSMI.Size = new System.Drawing.Size(122, 22);
             this.chickenTSMI.Text = "Chickens";
             this.chickenTSMI.Click += new System.EventHandler(this.GamePersonChanged);
             // 
@@ -161,7 +161,7 @@
             // 
             this.foxTSMI.BackColor = System.Drawing.Color.DarkGray;
             this.foxTSMI.Name = "foxTSMI";
-            this.foxTSMI.Size = new System.Drawing.Size(180, 22);
+            this.foxTSMI.Size = new System.Drawing.Size(122, 22);
             this.foxTSMI.Text = "Fox";
             this.foxTSMI.Click += new System.EventHandler(this.GamePersonChanged);
             // 
@@ -181,7 +181,7 @@
             this.lowLevelTSMI.Checked = true;
             this.lowLevelTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
             this.lowLevelTSMI.Name = "lowLevelTSMI";
-            this.lowLevelTSMI.Size = new System.Drawing.Size(180, 22);
+            this.lowLevelTSMI.Size = new System.Drawing.Size(119, 22);
             this.lowLevelTSMI.Text = "Low";
             this.lowLevelTSMI.Click += new System.EventHandler(this.AI_LevelChanged);
             // 
@@ -189,7 +189,7 @@
             // 
             this.mediumLevelTSMI.BackColor = System.Drawing.Color.DarkGray;
             this.mediumLevelTSMI.Name = "mediumLevelTSMI";
-            this.mediumLevelTSMI.Size = new System.Drawing.Size(180, 22);
+            this.mediumLevelTSMI.Size = new System.Drawing.Size(119, 22);
             this.mediumLevelTSMI.Text = "Medium";
             this.mediumLevelTSMI.Click += new System.EventHandler(this.AI_LevelChanged);
             // 
@@ -893,7 +893,7 @@
             this.Name = "GameForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Игра: лиса и 13 куриц";
+            this.Text = "Game: Fox and 13 Hens";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameForm_FormClosing);
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.menuStrip.ResumeLayout(false);
