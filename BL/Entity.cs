@@ -1,68 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace BL
 {
-    internal class Entity
+    sealed internal class Entity
     {
-        protected int _x;
-        protected int _y;
+        private Point _coordinates;
 
-        protected internal int X
+        internal Point Coordinates
         {
-            get => _x;
-            set
+            get => _coordinates;
+            private set
             {
-                if (value < 0 || value > 6)
+                if (value.X < 0 || value.X > 6 || value.Y < 0 || value.Y > 6)
                     throw new IndexOutOfRangeException("Coordinate \"X\" must be between 0 and 6.");
-                _x = value;
+                _coordinates = value;
             }
         }
 
-        protected internal int Y
+        internal EntityType EntityType { get; set; }
+        internal ImageType ImageType { get; set; }
+        internal bool IsMovable { get; set; }
+
+        internal Entity() { }
+
+        internal Entity(Point coordinates, EntityType entityType, ImageType imageType, bool isMovable)
         {
-            get => _y;
-            set
-            {
-                if (value < 0 || value > 6)
-                    throw new IndexOutOfRangeException("Coordinate \"Y\" must be between 0 and 6.");
-                _y = value;
-            }
-        }
-
-        protected internal EntityType EntityType { get; set; }
-        protected internal ImageType ImageType { get; set; }
-        protected internal bool IsMovable { get; set; }
-
-        protected internal Entity() { }
-
-        protected internal Entity(int x, int y, EntityType entityType, ImageType imageType, bool isMovable)
-        {
-            X = x;
-            Y = y;
+            _coordinates = coordinates;
             this.EntityType = entityType;
             this.ImageType = imageType;
             this.IsMovable = isMovable;
         }
 
-        protected internal Entity Clone()
+        internal Entity Clone()
         {
-            return new Entity(X, Y, this.EntityType, this.ImageType, IsMovable);
-        }
-
-        protected internal string GetKey()
-        {
-            return $"{X}{Y}";
+            return new Entity(this.Coordinates, this.EntityType, this.ImageType, this.IsMovable);
         }
 
         public override bool Equals(object obj)
         {
             return obj is Entity entity &&
-                   X == entity.X &&
-                   Y == entity.Y &&
+                   EqualityComparer<Point>.Default.Equals(Coordinates, entity.Coordinates) &&
                    EntityType == entity.EntityType &&
                    ImageType == entity.ImageType &&
                    IsMovable == entity.IsMovable;
@@ -70,10 +52,11 @@ namespace BL
 
         public override int GetHashCode()
         {
-            int hashCode = -1038328219;
-            hashCode = hashCode * -1521134295 + X.GetHashCode();
-            hashCode = hashCode * -1521134295 + Y.GetHashCode();
+            int hashCode = -1107326715;
+            hashCode = hashCode * -1521134295 + Coordinates.GetHashCode();
             hashCode = hashCode * -1521134295 + EntityType.GetHashCode();
+            hashCode = hashCode * -1521134295 + ImageType.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsMovable.GetHashCode();
             return hashCode;
         }
     }

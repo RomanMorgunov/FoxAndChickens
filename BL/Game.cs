@@ -1,31 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Xml.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace BL
 {
     sealed public class Game
     {
-        //to determine size
         private List<Field> _fields;
         private ArtificialIntelligence _ai;
 
-        public PlayerPerson PlayerPerson { get; private set; }
+        public PlayerCharacter PlayerCharacter { get; private set; }
         public AI_level AI_Level { get; private set; }
         public GameMode GameMode { get; private set; }
+
         private Field LastField => _fields[_fields.Count - 1];
 
         public event EventHandler<EntitiesPropertiesEventArgs> OnChangeEntitiesProperties;
         public event EventHandler<WinEventArgs> OnWin;
 
-        public Game(PlayerPerson playerPerson, AI_level aiLevel, GameMode gameMode, 
+        public Game(PlayerCharacter playerCharacter, AI_level aiLevel, GameMode gameMode, 
             EventHandler<EntitiesPropertiesEventArgs> onChangeEntitiesProperties,
             EventHandler<WinEventArgs> onWin)
         {
-            this.PlayerPerson = playerPerson;
+            this.PlayerCharacter = playerCharacter;
             this.AI_Level = aiLevel;
             this.GameMode = gameMode;
             _fields = new List<Field>(64);
@@ -35,8 +36,8 @@ namespace BL
 
             if (gameMode == GameMode.PlayerVsAI)
             {
-                _ai = new MinMaxAI(this.PlayerPerson, this.AI_Level);
-                if (this.PlayerPerson == PlayerPerson.Fox)
+                _ai = new MinMaxAI(this.PlayerCharacter, this.AI_Level);
+                if (this.PlayerCharacter == PlayerCharacter.Fox)
                 {
                     MovingForAI();
                 }
@@ -45,27 +46,8 @@ namespace BL
             InvokeUpdateEvents();
         }
 
-        private IDictionary<string, bool> GetDictionaryWithMovingStatus()
-        {
-            Dictionary<string, bool> pairs = new Dictionary<string, bool>(33);
-            foreach (var item in LastField.GetEntities())
-            {
-                pairs[item.Key] = item.Value.IsMovable;
-            }
-
-            return pairs;
-        }
-
-        private IDictionary<string, ImageType> GetDictionaryWithImageTypes()
-        {
-            Dictionary<string, ImageType> pairs = new Dictionary<string, ImageType>(33);
-            foreach (var item in LastField.GetEntities())
-            {
-                pairs[item.Key] = item.Value.ImageType;
-            }
-
-            return pairs;
-        }
+        private IDictionary<Point, bool> GetDictionaryWithMovingStatus() => LastField.GetDictionaryWithMovingStatus();
+        private IDictionary<Point, ImageType> GetDictionaryWithImageTypes() => LastField.GetDictionaryWithImageTypes();
 
         private int GetLeftChickens()
         {
@@ -78,7 +60,7 @@ namespace BL
                     GetDictionaryWithMovingStatus(), GetDictionaryWithImageTypes(), GetLeftChickens()));
         }
 
-        public void Moving(string entityKey)
+        public void Move(Point entityCoordinates)
         {
             var movingCharacterType = LastField.GetEntityTypeOfMovingCharacters();
 
@@ -89,38 +71,30 @@ namespace BL
             }
 
             //Moving
-            LastField.UpdateEntitiesProperties(entityKey);
+            LastField.Move(entityCoordinates);
+
+            if (this.GameMode == GameMode.PlayerVsAI && movingCharacterType == EntityType.EmptyCell && 
+                !LastField.GameOver)
+            {
+                MovingForAI();
+            }
 
             InvokeUpdateEvents();
 
             if (LastField.GameOver)
             {
-                OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
-            }
-            else
-            {
-                if (this.GameMode == GameMode.PlayerVsAI && movingCharacterType == EntityType.EmptyCell)
-                {
-                    MovingForAI();
-                }
+                OnWin?.Invoke(this, new WinEventArgs(LastField.LastCharacterType));
             }
         }
 
         private void MovingForAI()
         {
             //calculation move
-            string[] moves = _ai.RunAI(this.LastField.Clone(isCopyBestWays: true));
+            Point[] moves = _ai.RunAI(this.LastField.Clone());
 
             //Moving
-            LastField.UpdateEntitiesProperties(moves[0]);
-            LastField.UpdateEntitiesProperties(moves[1]);
-
-            if (LastField.GameOver)
-            {
-                OnWin?.Invoke(this, new WinEventArgs(LastField.LastPerson));
-            }
-
-            InvokeUpdateEvents();
+            LastField.Move(moves[0]);
+            LastField.Move(moves[1]);
         }
 
         public void CancelMove()
@@ -139,7 +113,7 @@ namespace BL
         PlayerVsAI
     }
 
-    public enum PlayerPerson
+    public enum PlayerCharacter
     {
         Fox,
         Chicken

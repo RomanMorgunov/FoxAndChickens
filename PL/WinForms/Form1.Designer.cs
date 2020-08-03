@@ -35,7 +35,7 @@
             this.gameModeTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.playerVsPlayerTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.playerVsAiTSMI = new System.Windows.Forms.ToolStripMenuItem();
-            this.personTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.characterTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.chickenTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.foxTSMI = new System.Windows.Forms.ToolStripMenuItem();
             this.ai_LevelTSMI = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +79,6 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.cancelMoveBtn = new System.Windows.Forms.ToolStripButton();
             this.chickensLeftLbl = new System.Windows.Forms.ToolStripLabel();
-            this.countLabel = new System.Windows.Forms.ToolStripLabel();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip.SuspendLayout();
             this.GameFieldTLP.SuspendLayout();
@@ -92,7 +91,7 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newGameTSMI,
             this.gameModeTSMI,
-            this.personTSMI,
+            this.characterTSMI,
             this.ai_LevelTSMI,
             this.exitTSMI});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -137,15 +136,15 @@
             this.playerVsAiTSMI.Text = "Player vs AI";
             this.playerVsAiTSMI.Click += new System.EventHandler(this.GameModeChanged);
             // 
-            // personTSMI
+            // characterTSMI
             // 
-            this.personTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.characterTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.chickenTSMI,
             this.foxTSMI});
-            this.personTSMI.ForeColor = System.Drawing.Color.Maroon;
-            this.personTSMI.Name = "personTSMI";
-            this.personTSMI.Size = new System.Drawing.Size(105, 20);
-            this.personTSMI.Text = "Person selection";
+            this.characterTSMI.ForeColor = System.Drawing.Color.Maroon;
+            this.characterTSMI.Name = "characterTSMI";
+            this.characterTSMI.Size = new System.Drawing.Size(120, 20);
+            this.characterTSMI.Text = "Character selection";
             // 
             // chickenTSMI
             // 
@@ -155,7 +154,7 @@
             this.chickenTSMI.Name = "chickenTSMI";
             this.chickenTSMI.Size = new System.Drawing.Size(122, 22);
             this.chickenTSMI.Text = "Chickens";
-            this.chickenTSMI.Click += new System.EventHandler(this.GamePersonChanged);
+            this.chickenTSMI.Click += new System.EventHandler(this.GameCharacterChanged);
             // 
             // foxTSMI
             // 
@@ -163,7 +162,7 @@
             this.foxTSMI.Name = "foxTSMI";
             this.foxTSMI.Size = new System.Drawing.Size(122, 22);
             this.foxTSMI.Text = "Fox";
-            this.foxTSMI.Click += new System.EventHandler(this.GamePersonChanged);
+            this.foxTSMI.Click += new System.EventHandler(this.GameCharacterChanged);
             // 
             // ai_LevelTSMI
             // 
@@ -831,8 +830,7 @@
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cancelMoveBtn,
-            this.chickensLeftLbl,
-            this.countLabel});
+            this.chickensLeftLbl});
             this.toolStrip.Location = new System.Drawing.Point(0, 566);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(676, 25);
@@ -857,13 +855,6 @@
             this.chickensLeftLbl.Size = new System.Drawing.Size(162, 22);
             this.chickensLeftLbl.Text = "To win, foxes need to eat 5";
             this.chickensLeftLbl.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            // 
-            // countLabel
-            // 
-            this.countLabel.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.countLabel.Name = "countLabel";
-            this.countLabel.Size = new System.Drawing.Size(13, 22);
-            this.countLabel.Text = "0";
             // 
             // imageList
             // 
@@ -913,7 +904,7 @@
         private System.Windows.Forms.ToolStripMenuItem gameModeTSMI;
         private System.Windows.Forms.ToolStripMenuItem playerVsPlayerTSMI;
         private System.Windows.Forms.ToolStripMenuItem playerVsAiTSMI;
-        private System.Windows.Forms.ToolStripMenuItem personTSMI;
+        private System.Windows.Forms.ToolStripMenuItem characterTSMI;
         private System.Windows.Forms.ToolStripMenuItem chickenTSMI;
         private System.Windows.Forms.ToolStripMenuItem foxTSMI;
         private System.Windows.Forms.ToolStripMenuItem ai_LevelTSMI;
@@ -958,7 +949,6 @@
         private System.Windows.Forms.ToolStripButton cancelMoveBtn;
         private System.Windows.Forms.ToolStripLabel chickensLeftLbl;
         private System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.ToolStripLabel countLabel;
     }
 }
 

@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace BL
 {
     internal abstract class ArtificialIntelligence
     {
-        protected PlayerPerson _playerPerson;
+        protected PlayerCharacter _playerCharacter;
         protected AI_level _aiLevel;
 
-        protected internal ArtificialIntelligence(PlayerPerson playerPerson, AI_level aiLevel)
+        protected internal ArtificialIntelligence(PlayerCharacter playerCharacter, AI_level aiLevel)
         {
-            this._playerPerson = playerPerson;
+            this._playerCharacter = playerCharacter;
             this._aiLevel = aiLevel;
         }
 
-        protected internal abstract string[] RunAI(Field initialField);
+        protected internal abstract Point[] RunAI(Field initialField);
     }
 
     //the value of an enumeration element is the level of recursion for MinMax algorithm

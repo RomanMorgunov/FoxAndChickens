@@ -1,63 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Collections.Generic;
 
 namespace BL
 {
-    internal class MinMaxAI : ArtificialIntelligence
+    sealed internal class MinMaxAI : ArtificialIntelligence
     {
         private const int MIN_EVALUATION_VALUE = 0;
         private const int MAX_EVALUATION_VALUE = int.MaxValue - 1;
-        private string[] _aiMoves;
+        private Point[] _aiMoves;
 
-        internal MinMaxAI(PlayerPerson playerPerson, AI_level aiLevel)
-            : base(playerPerson, aiLevel)
+        internal MinMaxAI(PlayerCharacter playerCharacter, AI_level aiLevel)
+            : base(playerCharacter, aiLevel)
         {
-            _aiMoves = new string[2];
+            _aiMoves = new Point[2];
         }
 
-        protected internal override string[] RunAI(Field field)
+        protected internal override Point[] RunAI(Field field)
         {
-            RunMinMax(in field, 0, MIN_EVALUATION_VALUE - 1, MAX_EVALUATION_VALUE + 1);
+            RunMinMax(field, 0, MIN_EVALUATION_VALUE - 1, MAX_EVALUATION_VALUE + 1);
             return _aiMoves;
         }
 
-        private int RunMinMax(in Field initialField, int recursiveLevel, int alpha, int beta)
+        private int RunMinMax(Field initialField, int recursiveLevel, int alpha, int beta)
         {
-            //if the AI plays as a fox
-            int coefficient = this._playerPerson == PlayerPerson.Chicken ? 1 : 0;
+            //if the AI plays as a fox then coefficient = 1
+            int coefficient = this._playerCharacter == PlayerCharacter.Chicken ? 1 : 0;
 
-            //at the last level of the tree, return the value of the heuristic function
-            if (recursiveLevel >= ((int)_aiLevel) * 2 + coefficient)
-                return GetHeuristicEvaluation(initialField);
-
-            //if GameOver
-            if (initialField.GameOver)
+            //if the last level of the tree or game over
+            if (recursiveLevel >= ((int)_aiLevel) * 2 + coefficient ||
+                initialField.GameOver)
                 return GetHeuristicEvaluation(initialField);
 
             //if the fox is move now, then we give it the maximum value
-            int bestEvaluation = initialField.LastPerson == PlayerPerson.Chicken ? 
+            int bestEvaluation = initialField.LastCharacterType == PlayerCharacter.Chicken ?
                 MAX_EVALUATION_VALUE : MIN_EVALUATION_VALUE;
 
-            string[] bestMove = new string[2];
+            Point[] bestMove = new Point[2];
 
-            //iterate over all possible moves of this person
-            foreach (var item in initialField.BestsWays)
+            //iterate over all possible moves of this character
+            foreach (var item in initialField.AllWays)
             {
                 //to move
                 Field newField = initialField.Clone();
-                newField.UpdateEntitiesProperties(item.Keys.First());
-                newField.UpdateEntitiesProperties(item.Keys.Last());
+                newField.Move(item.Keys.First());
+                newField.Move(item.Keys.Last());
 
                 //evaluate the move we have chosen
-                int currentEvaluation = RunMinMax(in newField, recursiveLevel + 1, alpha, beta);
+                int currentEvaluation = RunMinMax(newField, recursiveLevel + 1, alpha, beta);
 
                 //if it is better than everyone that was before this - remember that it is the best
                 //foxes minimize evaluation, chicken - maximize
-                if (currentEvaluation >= bestEvaluation && initialField.LastPerson == PlayerPerson.Fox ||    //for chicken
-                    currentEvaluation < bestEvaluation && initialField.LastPerson == PlayerPerson.Chicken || //for fox
+                if (currentEvaluation >= bestEvaluation && initialField.LastCharacterType == PlayerCharacter.Fox ||    //for chicken
+                    currentEvaluation < bestEvaluation && initialField.LastCharacterType == PlayerCharacter.Chicken || //for fox
                     bestMove[0] == null)
                 {
                     bestEvaluation = currentEvaluation;
@@ -67,7 +63,7 @@ namespace BL
 
                 //alpha-beta pruning
                 //if the fox is move now
-                if (initialField.LastPerson == PlayerPerson.Chicken)
+                if (initialField.LastCharacterType == PlayerCharacter.Chicken)
                 {
                     beta = Math.Min(beta, currentEvaluation);
                 }
@@ -101,7 +97,7 @@ namespace BL
             if (field.GameOver)
             {
                 //if the chickens won
-                if (field.LastPerson == PlayerPerson.Chicken)
+                if (field.LastCharacterType == PlayerCharacter.Chicken)
                 {
                     return MAX_EVALUATION_VALUE;
                 }
@@ -125,7 +121,7 @@ namespace BL
                     if (y == 2 && (x == 2 || x == 3 || x == 4))
                         continue;
 
-                    if (field.GetEntityType(x, y) == EntityType.Chicken)
+                    if (field.GetEntityType(new Point(x, y)) == EntityType.Chicken)
                         evaluation += 6 - y;
                 }
             }
@@ -134,7 +130,7 @@ namespace BL
             {
                 for (int x = 2; x < 5; x++)
                 {
-                    if (field.GetEntityType(x, y) == EntityType.Chicken)
+                    if (field.GetEntityType(new Point(x, y)) == EntityType.Chicken)
                         evaluation += 7 - y;
                 }
             }

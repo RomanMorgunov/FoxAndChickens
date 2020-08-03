@@ -1,13 +1,13 @@
 ﻿using BL;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace WinForms
 {
@@ -15,7 +15,7 @@ namespace WinForms
     {
         private Game _game;
         private Dictionary<ImageType, Image> _conformityImageTypeWithImage;
-        private Dictionary<string, Button> _conformityButtonWithHisIndex;
+        private Dictionary<Point, Button> _conformityButtonWithHisIndex;
 
         private GameMode GameMode
         {
@@ -25,11 +25,11 @@ namespace WinForms
             }
         }
 
-        private PlayerPerson PlayerPerson
+        private PlayerCharacter PlayerCharacter
         {
             get
             {
-                return this.chickenTSMI.Checked ? PlayerPerson.Chicken : PlayerPerson.Fox;
+                return this.chickenTSMI.Checked ? PlayerCharacter.Chicken : PlayerCharacter.Fox;
             }
         }
 
@@ -59,14 +59,15 @@ namespace WinForms
 
         private void NewGame()
         {
+            GameFieldTLP.Enabled = false;
             if (_game != null)
             {
                 _game.OnChangeEntitiesProperties -= UpdateFieldDisplay;
                 _game.OnWin -= GameOver;
             }
 
-            _game = new Game(this.PlayerPerson, this.AI_Level, this.GameMode, UpdateFieldDisplay, GameOver);
-            countLabel.Text = "0";
+            _game = new Game(this.PlayerCharacter, this.AI_Level, this.GameMode, UpdateFieldDisplay, GameOver);
+            GameFieldTLP.Enabled = true;
         }
 
         private void InitDictionaryConformityImages()
@@ -82,25 +83,32 @@ namespace WinForms
 
         private void InitDictionaryConformityButtons()
         {
-            _conformityButtonWithHisIndex = new Dictionary<string, Button>();
+            _conformityButtonWithHisIndex = new Dictionary<Point, Button>();
             foreach (var control in GameFieldTLP.Controls)
             {
                 Button button = control as Button;
                 if (button != null)
-                {                    
-                    _conformityButtonWithHisIndex[button.Tag.ToString()] = button;
+                {
+                    string coord = button.Tag.ToString();
+                    _conformityButtonWithHisIndex[new Point(int.Parse(coord[0].ToString()), 
+                        int.Parse(coord[1].ToString()))] = button;
                 }
             }
         }
 
         private void CellButton_Click(object sender, EventArgs e)
         {
-            countLabel.Text = (int.Parse(countLabel.Text) + 1).ToString();
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            GameFieldTLP.Enabled = false;
             Button button = sender as Button;
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
 
-            _game.Moving(button.Tag.ToString());
+            stopwatch.Start();
+            string coord = button.Tag.ToString();
+            _game.Move(new Point(int.Parse(coord[0].ToString()), int.Parse(coord[1].ToString())));
+            stopwatch.Stop();
+            //MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
         }
 
         private void CancelMoveButton_Click(object sender, EventArgs e)
@@ -113,9 +121,10 @@ namespace WinForms
             UpdateEnableStatusOfButtonsOnField(e.IsMovablePairs);
             UpdateImagesOnField(e.ImageTypePairs);
             UpdateChickensLeftLabel(e.ChickensLeftBeforeLosing);
+            GameFieldTLP.Enabled = true;
         }
 
-        private void UpdateEnableStatusOfButtonsOnField(IDictionary<string, bool> isMovablePairs)
+        private void UpdateEnableStatusOfButtonsOnField(IDictionary<Point, bool> isMovablePairs)
         {
             foreach (var pair in isMovablePairs)
             {
@@ -123,7 +132,7 @@ namespace WinForms
             }
         }
 
-        private void UpdateImagesOnField(IDictionary<string, ImageType> imageTypePairs)
+        private void UpdateImagesOnField(IDictionary<Point, ImageType> imageTypePairs)
         {
             foreach (var pair in _conformityButtonWithHisIndex)
             {
@@ -170,7 +179,7 @@ namespace WinForms
                 {
                     this.playerVsAiTSMI.Checked = false;
                     this.playerVsPlayerTSMI.Checked = true;
-                    this.personTSMI.Enabled = false;
+                    this.characterTSMI.Enabled = false;
                     this.ai_LevelTSMI.Enabled = false;
                     NewGame();
                 }
@@ -182,18 +191,18 @@ namespace WinForms
                 {
                     this.playerVsAiTSMI.Checked = true;
                     this.playerVsPlayerTSMI.Checked = false;
-                    this.personTSMI.Enabled = true;
+                    this.characterTSMI.Enabled = true;
                     this.ai_LevelTSMI.Enabled = true;
                     NewGame();
                 }
             }
         }
 
-        private void GamePersonChanged(object sender, EventArgs e)
+        private void GameCharacterChanged(object sender, EventArgs e)
         {
             if (object.ReferenceEquals(sender, this.foxTSMI) && this.chickenTSMI.Checked)
             {
-                if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", "Game person change",
+                if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", "Game Character change",
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     this.foxTSMI.Checked = true;
@@ -203,7 +212,7 @@ namespace WinForms
             }
             if (object.ReferenceEquals(sender, this.chickenTSMI) && this.foxTSMI.Checked)
             {
-                if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", "Game person change",
+                if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", "Game Character change",
                 MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     this.foxTSMI.Checked = false;
