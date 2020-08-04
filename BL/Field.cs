@@ -13,28 +13,43 @@ namespace BL
     {
         internal Point _lastCharacterCoordinates;
         private IDictionary<Point, Entity> _entities;
+        readonly private List<Point> _eatingRuleForTheFox;
+        readonly private List<Point> _availableMovementsForTheFox;
+        readonly private List<Point> _availableMovementsForChickens;
 
         internal bool GameOver { get; private set; }
         internal PlayerCharacter LastCharacterType { get; private set; }
         internal List<Dictionary<Point, Entity>> AllWays { get; private set; }
 
-        internal Field()
+        internal Field(Dictionary<Direction, bool> eatingRuleForTheFox,
+            Dictionary<Direction, bool> availableMovementsForTheFox,
+            Dictionary<Direction, bool> availableMovementsForChickens)
         {
             GameOver = false;
             LastCharacterType = PlayerCharacter.Fox;
             _entities = new Dictionary<Point, Entity>(33);       //The field consist of 33 cells
             AllWays = new List<Dictionary<Point, Entity>>(8);
+            _eatingRuleForTheFox = new List<Point>(4);
+            _availableMovementsForTheFox = new List<Point>(8);
+            _availableMovementsForChickens = new List<Point>(5);
 
+            InitDirections(eatingRuleForTheFox, availableMovementsForTheFox, availableMovementsForChickens);
             InitEntities();
             UpdateAllWays();
         }
 
-        private Field(IDictionary<Point, Entity> entities, PlayerCharacter lastCharacterType, bool gameOver)
+        private Field(IDictionary<Point, Entity> entities, PlayerCharacter lastCharacterType, bool gameOver,
+            List<Point> eatingRuleForTheFox,
+            List<Point> availableMovementsForTheFox,
+            List<Point> availableMovementsForChickens)
         {
             GameOver = gameOver;
             _entities = entities;
             LastCharacterType = lastCharacterType;
             AllWays = new List<Dictionary<Point, Entity>>(8);
+            _eatingRuleForTheFox = eatingRuleForTheFox;
+            _availableMovementsForTheFox = availableMovementsForTheFox;
+            _availableMovementsForChickens = availableMovementsForChickens;
 
             UpdateAllWays();
         }
@@ -46,7 +61,8 @@ namespace BL
             {
                 entities.Add(item.Key, item.Value.Clone());
             }
-            return new Field(entities, LastCharacterType, GameOver);
+            return new Field(entities, LastCharacterType, GameOver, 
+                _eatingRuleForTheFox, _availableMovementsForTheFox, _availableMovementsForChickens);
         }
 
         private void InitEntities()
@@ -90,6 +106,37 @@ namespace BL
                     Entity entity = new Entity(new Point(x, y), EntityType.Chicken, ImageType.ChickenImage, false);
                     _entities.Add(entity.Coordinates, entity);
                 }
+            }
+        }
+
+        private void InitDirections(Dictionary<Direction, bool> eatingRuleForTheFox,
+            Dictionary<Direction, bool> availableMovementsForTheFox,
+            Dictionary<Direction, bool> availableMovementsForChickens)
+        {
+            Dictionary<Direction, Point> pairs = new Dictionary<Direction, Point>();
+            pairs[Direction.Top] = new Point(0, -1);
+            pairs[Direction.Left] = new Point(-1, 0);
+            pairs[Direction.Right] = new Point(1, 0);
+            pairs[Direction.Bottom] = new Point(0, 1);
+            pairs[Direction.TopLeft] = new Point(-1, -1);
+            pairs[Direction.TopRight] = new Point(1, -1);
+            pairs[Direction.BottomLeft] = new Point(-1, 1);
+            pairs[Direction.BottomRight] = new Point(1, 1);
+
+            foreach (var item in eatingRuleForTheFox)
+            {
+                if (item.Value)
+                    _eatingRuleForTheFox.Add(pairs[item.Key]);
+            }
+            foreach (var item in availableMovementsForTheFox)
+            {
+                if (item.Value)
+                    _availableMovementsForTheFox.Add(pairs[item.Key]);
+            }
+            foreach (var item in availableMovementsForChickens)
+            {
+                if (item.Value)
+                    _availableMovementsForChickens.Add(pairs[item.Key]);
             }
         }
 
@@ -290,20 +337,22 @@ namespace BL
             }
         }
 
-        private Dictionary<Point, Entity> FindTheMovingWays(Entity entity, PlayerCharacter playerCharacter)
-        {
-            //chicken can't move down
-            int y_max = playerCharacter == PlayerCharacter.Chicken ? 1 : 2;
-
-            Dictionary<Point, Entity> moves = new Dictionary<Point, Entity>(8);
-
-            for (int y = -1; y < y_max; y++)
+        private Dictionary<Point, Entity> FindTheMovingWays(Entity entity, PlayerCharacter character)
+        {Dictionary<Point, Entity> moves = new Dictionary<Point, Entity>(8);
+            
+            for (int y = -1; y < 2; y++)
             {
                 for (int x = -1; x < 2; x++)
                 {
                     //does not move
-                    if (x == 0 && y == 0)
+                    if (x == 0 && y == 0 || 
+                        (character == PlayerCharacter.Fox && 
+                        !_availableMovementsForTheFox.Any(p => p.X == x && p.Y == y)) ||
+                        (character == PlayerCharacter.Chicken &&
+                        !_availableMovementsForChickens.Any(p => p.X == x && p.Y == y)))
+                    {
                         continue;
+                    }
 
                     Point coordinates = new Point(entity.Coordinates.X + x, entity.Coordinates.Y + y);
                     if (_entities.TryGetValue(coordinates, out Entity cell) && cell.EntityType == EntityType.EmptyCell)
@@ -324,7 +373,7 @@ namespace BL
             Dictionary<Point, Entity> dict = new Dictionary<Point, Entity>(5);
             dict.Add(entity.Coordinates, entity);
 
-            FindingKillingWays(dict, in ways, new Point(0, 0));
+            FindingKillingWays(dict, in ways);
 
             //delete faulty ways
             ways.RemoveAll(d => d.Count < 3);
@@ -361,8 +410,7 @@ namespace BL
             }
         }
 
-        private void FindingKillingWays(Dictionary<Point, Entity> currentWay, 
-            in List<Dictionary<Point, Entity>> allWays, Point lastShift)
+        private void FindingKillingWays(Dictionary<Point, Entity> currentWay, in List<Dictionary<Point, Entity>> allWays)
         {
             int count = 0;
 
@@ -370,8 +418,8 @@ namespace BL
             {
                 for (int shiftX = -1; shiftX < 2; shiftX++)
                 {
-                    if ((shiftX != 0 && shiftY != 0) || (shiftX == 0 && shiftY == 0) || 
-                        (lastShift.X == -shiftX && lastShift.Y == -shiftY) /*forbid to move back*/) 
+                    if ((shiftX == 0 && shiftY == 0) || 
+                        !_eatingRuleForTheFox.Any(p => p.X == shiftX && p.Y == shiftY)) 
                         continue;
 
                     var cell = currentWay.Last().Value;
@@ -381,11 +429,14 @@ namespace BL
                         Point coordEmpty = new Point(cell.Coordinates.X + 2 * shiftX, cell.Coordinates.Y + 2 * shiftY);
                         if (_entities.TryGetValue(coordEmpty, out Entity empty) && empty.EntityType == EntityType.EmptyCell)
                         {
+                            //forbid to move back
+                            if (currentWay.ContainsKey(coordCh))
+                                continue;
+
                             count++;
                             currentWay.Add(coordCh, chicken);
                             currentWay.Add(coordEmpty, empty);
-                            FindingKillingWays(new Dictionary<Point, Entity>(currentWay), in allWays, 
-                                new Point(shiftX, shiftY));
+                            FindingKillingWays(new Dictionary<Point, Entity>(currentWay), in allWays);
                             currentWay.Remove(coordEmpty);
                             currentWay.Remove(coordCh);
                         }

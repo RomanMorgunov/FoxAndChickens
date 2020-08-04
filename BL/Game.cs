@@ -13,24 +13,26 @@ namespace BL
         private List<Field> _fields;
         private ArtificialIntelligence _ai;
 
-        public PlayerCharacter PlayerCharacter { get; private set; }
         public AI_level AI_Level { get; private set; }
         public GameMode GameMode { get; private set; }
+        public PlayerCharacter PlayerCharacter { get; private set; }
 
         private Field LastField => _fields[_fields.Count - 1];
 
-        public event EventHandler<EntitiesPropertiesEventArgs> OnChangeEntitiesProperties;
         public event EventHandler<WinEventArgs> OnWin;
+        public event EventHandler<EntitiesPropertiesEventArgs> OnChangeEntitiesProperties;
 
         public Game(PlayerCharacter playerCharacter, AI_level aiLevel, GameMode gameMode, 
-            EventHandler<EntitiesPropertiesEventArgs> onChangeEntitiesProperties,
-            EventHandler<WinEventArgs> onWin)
+            EventHandler<EntitiesPropertiesEventArgs> onChangeEntitiesProperties, EventHandler<WinEventArgs> onWin,
+            Dictionary<Direction, bool> eatingRuleForTheFox,
+            Dictionary<Direction, bool> availableMovementsForTheFox,
+            Dictionary<Direction, bool> availableMovementsForChickens)
         {
             this.PlayerCharacter = playerCharacter;
             this.AI_Level = aiLevel;
             this.GameMode = gameMode;
             _fields = new List<Field>(64);
-            _fields.Add(new Field());
+            _fields.Add(new Field(eatingRuleForTheFox, availableMovementsForTheFox, availableMovementsForChickens));
             OnChangeEntitiesProperties += onChangeEntitiesProperties;
             OnWin += onWin;
 
@@ -117,5 +119,17 @@ namespace BL
     {
         Fox,
         Chicken
+    }
+
+    public enum Direction
+    {
+        Top,
+        Left,
+        Right,
+        Bottom,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
     }
 }

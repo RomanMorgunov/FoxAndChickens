@@ -14,6 +14,7 @@ namespace WinForms
     public partial class GameForm : Form
     {
         private Game _game;
+        readonly GameMechanicsSettingsForm _settingsForm;
         private Dictionary<ImageType, Image> _conformityImageTypeWithImage;
         private Dictionary<Point, Button> _conformityButtonWithHisIndex;
 
@@ -50,6 +51,7 @@ namespace WinForms
 
             InitDictionaryConformityImages();
             InitDictionaryConformityButtons();
+            _settingsForm = new GameMechanicsSettingsForm();
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -66,7 +68,9 @@ namespace WinForms
                 _game.OnWin -= GameOver;
             }
 
-            _game = new Game(this.PlayerCharacter, this.AI_Level, this.GameMode, UpdateFieldDisplay, GameOver);
+            _game = new Game(this.PlayerCharacter, this.AI_Level, this.GameMode, UpdateFieldDisplay, GameOver, 
+                _settingsForm.EatingRuleForTheFox, _settingsForm.AvailableMovementsForTheFox, 
+                _settingsForm.AvailableMovementsForChickens);
             GameFieldTLP.Enabled = true;
         }
 
@@ -103,7 +107,7 @@ namespace WinForms
             Button button = sender as Button;
             if (button == null)
                 throw new NullReferenceException("The event was triggered not by a button");
-
+            
             stopwatch.Start();
             string coord = button.Tag.ToString();
             _game.Move(new Point(int.Parse(coord[0].ToString()), int.Parse(coord[1].ToString())));
@@ -251,6 +255,16 @@ namespace WinForms
             if (e.Button == MouseButtons.Right)
             {
                 CancelMoveButton_Click(sender, EventArgs.Empty);
+            }
+        }
+
+        private void gameMechanicsSettingsTSMI_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to continue? Progress will be lost!", 
+                "Game mechanics settings change", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                _settingsForm.ShowDialog();
+                NewGame();
             }
         }
         //****************************interface end
