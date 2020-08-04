@@ -29,7 +29,7 @@ namespace BL
             int coefficient = this._playerCharacter == PlayerCharacter.Chicken ? 1 : 0;
 
             //if the last level of the tree or game over
-            if (recursiveLevel >= ((int)_aiLevel) * 2 + coefficient ||
+            if ((recursiveLevel >= ((int)_aiLevel) * 2 + coefficient) ||
                 initialField.GameOver)
                 return GetHeuristicEvaluation(initialField);
 
@@ -54,7 +54,7 @@ namespace BL
                 //foxes minimize evaluation, chicken - maximize
                 if (currentEvaluation >= bestEvaluation && initialField.LastCharacterType == PlayerCharacter.Fox ||    //for chicken
                     currentEvaluation < bestEvaluation && initialField.LastCharacterType == PlayerCharacter.Chicken || //for fox
-                    bestMove[0] == null)
+                    bestMove[0].X == 0 && bestMove[0].Y == 0 || bestMove[1].X == 0 && bestMove[1].Y == 0) //if there is nowhere to move
                 {
                     bestEvaluation = currentEvaluation;
                     bestMove[0] = item.Keys.First();
@@ -76,11 +76,6 @@ namespace BL
                 {
                     break;
                 }
-            }
-
-            if (bestMove[0] == null)
-            {
-                throw new ArgumentException("Character can't move.");
             }
 
             //writing down the move
