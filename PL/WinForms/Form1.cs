@@ -114,7 +114,7 @@ namespace WinForms
             string coord = button.Tag.ToString();
             _game.Move(new Point(int.Parse(coord[0].ToString()), int.Parse(coord[1].ToString())));
             stopwatch.Stop();
-            MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
+            //MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
         }
 
         private void CancelMoveButton_Click(object sender, EventArgs e)

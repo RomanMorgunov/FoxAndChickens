@@ -40,12 +40,19 @@ namespace BL
             OnChangeEntitiesProperties += onChangeEntitiesProperties;
             OnWin += onWin;
 
-            if (gameMode == GameMode.PlayerVsAI)
+            if (LastField.GameOver)
             {
-                _ai = new MinMaxAI(this.PlayerCharacter, this.AI_Level);
-                if (this.PlayerCharacter == PlayerCharacter.Fox)
+                OnWin?.Invoke(this, new WinEventArgs(LastField.LastCharacterType));
+            }
+            else
+            {
+                if (gameMode == GameMode.PlayerVsAI)
                 {
-                    MovingForAI();
+                    _ai = new MinMaxAI(this.PlayerCharacter, this.AI_Level);
+                    if (this.PlayerCharacter == PlayerCharacter.Fox)
+                    {
+                        MovingForAI();
+                    }
                 }
             }
 

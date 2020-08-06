@@ -38,7 +38,7 @@
             this.topAvailableMovementsChickensCB = new System.Windows.Forms.CheckBox();
             this.bottomAvailableMovementsChickensCB = new System.Windows.Forms.CheckBox();
             this.leftAvailableMovementsChickensCB = new System.Windows.Forms.CheckBox();
-            this.availableMovementsForTheFoxGB = new System.Windows.Forms.GroupBox();
+            this.availableMovementsForFoxesGB = new System.Windows.Forms.GroupBox();
             this.topLeftAvailableMovementsFoxCB = new System.Windows.Forms.CheckBox();
             this.bottomLeftAvailableMovementsFoxCB = new System.Windows.Forms.CheckBox();
             this.bottomRightAvailableMovementsFoxCB = new System.Windows.Forms.CheckBox();
@@ -63,7 +63,7 @@
             this.map = new WinForms.Map();
             this.availableMovementsGB.SuspendLayout();
             this.availableMovementsForChickensGB.SuspendLayout();
-            this.availableMovementsForTheFoxGB.SuspendLayout();
+            this.availableMovementsForFoxesGB.SuspendLayout();
             this.eatingRuleGB.SuspendLayout();
             this.controlsGB.SuspendLayout();
             this.SuspendLayout();
@@ -71,7 +71,7 @@
             // availableMovementsGB
             // 
             this.availableMovementsGB.Controls.Add(this.availableMovementsForChickensGB);
-            this.availableMovementsGB.Controls.Add(this.availableMovementsForTheFoxGB);
+            this.availableMovementsGB.Controls.Add(this.availableMovementsForFoxesGB);
             this.availableMovementsGB.Location = new System.Drawing.Point(0, 0);
             this.availableMovementsGB.Name = "availableMovementsGB";
             this.availableMovementsGB.Size = new System.Drawing.Size(207, 224);
@@ -187,23 +187,23 @@
             this.leftAvailableMovementsChickensCB.Text = "Left";
             this.leftAvailableMovementsChickensCB.UseVisualStyleBackColor = true;
             // 
-            // availableMovementsForTheFoxGB
+            // availableMovementsForFoxesGB
             // 
-            this.availableMovementsForTheFoxGB.Controls.Add(this.topLeftAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.bottomLeftAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.bottomRightAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.topRightAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.rightAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.topAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.bottomAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Controls.Add(this.leftAvailableMovementsFoxCB);
-            this.availableMovementsForTheFoxGB.Dock = System.Windows.Forms.DockStyle.Left;
-            this.availableMovementsForTheFoxGB.Location = new System.Drawing.Point(3, 16);
-            this.availableMovementsForTheFoxGB.Name = "availableMovementsForTheFoxGB";
-            this.availableMovementsForTheFoxGB.Size = new System.Drawing.Size(100, 205);
-            this.availableMovementsForTheFoxGB.TabIndex = 1;
-            this.availableMovementsForTheFoxGB.TabStop = false;
-            this.availableMovementsForTheFoxGB.Text = "For the fox";
+            this.availableMovementsForFoxesGB.Controls.Add(this.topLeftAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.bottomLeftAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.bottomRightAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.topRightAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.rightAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.topAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.bottomAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Controls.Add(this.leftAvailableMovementsFoxCB);
+            this.availableMovementsForFoxesGB.Dock = System.Windows.Forms.DockStyle.Left;
+            this.availableMovementsForFoxesGB.Location = new System.Drawing.Point(3, 16);
+            this.availableMovementsForFoxesGB.Name = "availableMovementsForFoxesGB";
+            this.availableMovementsForFoxesGB.Size = new System.Drawing.Size(100, 205);
+            this.availableMovementsForFoxesGB.TabIndex = 1;
+            this.availableMovementsForFoxesGB.TabStop = false;
+            this.availableMovementsForFoxesGB.Text = "For foxes";
             // 
             // topLeftAvailableMovementsFoxCB
             // 
@@ -340,7 +340,7 @@
             this.eatingRuleGB.Size = new System.Drawing.Size(122, 205);
             this.eatingRuleGB.TabIndex = 1;
             this.eatingRuleGB.TabStop = false;
-            this.eatingRuleGB.Text = "Eating rule for the fox";
+            this.eatingRuleGB.Text = "Eating rule for foxes";
             // 
             // topLeftEatingRuleCB
             // 
@@ -479,8 +479,8 @@
             this.availableMovementsGB.ResumeLayout(false);
             this.availableMovementsForChickensGB.ResumeLayout(false);
             this.availableMovementsForChickensGB.PerformLayout();
-            this.availableMovementsForTheFoxGB.ResumeLayout(false);
-            this.availableMovementsForTheFoxGB.PerformLayout();
+            this.availableMovementsForFoxesGB.ResumeLayout(false);
+            this.availableMovementsForFoxesGB.PerformLayout();
             this.eatingRuleGB.ResumeLayout(false);
             this.eatingRuleGB.PerformLayout();
             this.controlsGB.ResumeLayout(false);
@@ -491,7 +491,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox availableMovementsGB;
-        private System.Windows.Forms.GroupBox availableMovementsForTheFoxGB;
+        private System.Windows.Forms.GroupBox availableMovementsForFoxesGB;
         private System.Windows.Forms.CheckBox leftAvailableMovementsFoxCB;
         private System.Windows.Forms.Button saveBtn;
         private System.Windows.Forms.Button cancelBtn;

@@ -38,6 +38,7 @@ namespace BL
             InitEntities(gameMap);
             UpdateAllWays();
             UpdateIsMovableProperty(true, new Point(0, 0));
+            CheckCountEntities();
         }
 
         private Field(Dictionary<Point, Entity> entities, PlayerCharacter lastCharacterType, bool gameOver,
@@ -73,52 +74,11 @@ namespace BL
             pairs[EntityType.EmptyCell] = ImageType.EmptyCellImage;
             pairs[EntityType.Chicken] = ImageType.ChickenImage;
             pairs[EntityType.Fox] = ImageType.FoxImage;
-            
+
             foreach (var item in gameMap.Reverse())
             {
                 _entities.Add(item.Key, new Entity(item.Key, item.Value, pairs[item.Value], false));
             }
-
-            //for (int y = 0; y < 2; y++)
-            //{
-            //    for (int x = 2; x < 5; x++)
-            //    {
-            //        Entity entity = new Entity(new Point(x, y), EntityType.EmptyCell, ImageType.EmptyCellImage, false);
-            //        _entities.Add(entity.Coordinates, entity);
-            //    }
-            //}
-
-            //for (int y = 2; y < 4; y++)
-            //{
-            //    for (int x = 0; x < 7; x++)
-            //    {
-            //        Entity entity = new Entity(new Point(x, y), EntityType.EmptyCell, ImageType.EmptyCellImage, false);
-            //        if (x == 3 && y == 2)
-            //        {
-            //            entity.EntityType = EntityType.Fox;
-            //            entity.ImageType = ImageType.FoxImage;
-            //        }
-            //        _entities.Add(entity.Coordinates, entity);
-            //    }
-            //}
-
-            //for (int y = 4; y < 5; y++)
-            //{
-            //    for (int x = 0; x < 7; x++)
-            //    {
-            //        Entity entity = new Entity(new Point(x, y), EntityType.Chicken, ImageType.ChickenImage, true);
-            //        _entities.Add(entity.Coordinates, entity);
-            //    }
-            //}
-
-            //for (int y = 5; y < 7; y++)
-            //{
-            //    for (int x = 2; x < 5; x++)
-            //    {
-            //        Entity entity = new Entity(new Point(x, y), EntityType.Chicken, ImageType.ChickenImage, false);
-            //        _entities.Add(entity.Coordinates, entity);
-            //    }
-            //}
         }
 
         private void InitDirections(Dictionary<Direction, bool> eatingRuleForTheFox,
@@ -225,6 +185,8 @@ namespace BL
                         GameOver = false;
                         return;
                     }
+                    GameOver = true;
+                    return;
                 }
             }
 
@@ -306,9 +268,14 @@ namespace BL
             if (LastCharacterType == PlayerCharacter.Chicken)
             {
                 AllWays.Clear();
-                foreach (var item in _entities.Values)
+                List<Entity> foxes = _entities.Where(p => p.Value.EntityType == EntityType.Fox).Select(p => p.Value).ToList();
+                foreach (var item in foxes)
                 {
-                    if (item.EntityType == EntityType.Fox)
+                    FindFoxEatingWays(item);
+                }
+                if (AllWays.Count == 0)
+                {
+                    foreach (var item in foxes)
                     {
                         FindFoxWays(item);
                     }
@@ -324,19 +291,6 @@ namespace BL
                         FindChickenWays(item);
                     }
                 }
-            }
-        }
-
-        private void FindChickenWays(Entity entity)
-        {
-            Dictionary<Point, Entity> moves = FindTheMovingWays(entity, PlayerCharacter.Chicken);
-
-            foreach (var item in moves)
-            {
-                var d = new Dictionary<Point, Entity>(2);
-                d.Add(entity.Coordinates, entity);
-                d.Add(item.Key, item.Value);
-                AllWays.Add(d);
             }
         }
 
@@ -367,7 +321,20 @@ namespace BL
             return moves;
         }
 
-        private void FindFoxWays(Entity entity)
+        private void FindChickenWays(Entity entity)
+        {
+            Dictionary<Point, Entity> moves = FindTheMovingWays(entity, PlayerCharacter.Chicken);
+
+            foreach (var item in moves)
+            {
+                var d = new Dictionary<Point, Entity>(2);
+                d.Add(entity.Coordinates, entity);
+                d.Add(item.Key, item.Value);
+                AllWays.Add(d);
+            }
+        }
+
+        private void FindFoxEatingWays(Entity entity)
         {
             Dictionary<Point, Entity> moves;
 
@@ -383,16 +350,7 @@ namespace BL
 
             //killing list is empty
             if (ways.Count == 0)
-            {
-                moves = FindTheMovingWays(entity, PlayerCharacter.Fox);
-
-                foreach (var item in moves)
-                {
-                    var d = new Dictionary<Point, Entity>(2);
-                    d.Add(entity.Coordinates, entity);
-                    d.Add(item.Key, item.Value);
-                    AllWays.Add(d);
-                }
+            {                
                 return;
             }
 
@@ -410,6 +368,18 @@ namespace BL
             {
                 var pair = item.Last();
                 moves[pair.Key] = pair.Value;
+            }
+        }
+
+        private void FindFoxWays(Entity entity)
+        {
+            Dictionary<Point, Entity> moves = FindTheMovingWays(entity, PlayerCharacter.Fox);
+            foreach (var item in moves)
+            {
+                var d = new Dictionary<Point, Entity>(2);
+                d.Add(entity.Coordinates, entity);
+                d.Add(item.Key, item.Value);
+                AllWays.Add(d);
             }
         }
 
@@ -451,9 +421,30 @@ namespace BL
                 allWays.Add(currentWay);
         }
 
+        private void CheckCountEntities()
+        {
+            if (GetChickensCount() - 8 <= 0)
+            {
+                GameOver = true;
+                LastCharacterType = PlayerCharacter.Fox;
+                BlockThePropertyOfMovableForAllEntities();
+            }
+            if (GetFoxesCount() == 0)
+            {
+                GameOver = true;
+                LastCharacterType = PlayerCharacter.Chicken;
+                BlockThePropertyOfMovableForAllEntities();
+            }
+        }
+
         internal int GetChickensCount()
         {
             return _entities.Values.Where(e => e.EntityType == EntityType.Chicken).Count();
+        }
+
+        internal int GetFoxesCount()
+        {
+            return _entities.Values.Where(e => e.EntityType == EntityType.Fox).Count();
         }
 
         internal EntityType GetEntityTypeOfMovingCharacters()

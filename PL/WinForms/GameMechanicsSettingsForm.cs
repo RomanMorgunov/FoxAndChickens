@@ -41,7 +41,7 @@ namespace WinForms
             pairs[bottomLeftEatingRuleCB.Text] = Direction.BottomLeft;
             pairs[bottomRightEatingRuleCB.Text] = Direction.BottomRight;
 
-            foreach (var item in availableMovementsForTheFoxGB.Controls)
+            foreach (var item in availableMovementsForFoxesGB.Controls)
             {
                 CheckBox ch = item as CheckBox;
                 if (ch is null) continue;
@@ -65,7 +65,7 @@ namespace WinForms
 
         private void SetDefaultSettings()
         {
-            foreach (var item in availableMovementsForTheFoxGB.Controls)
+            foreach (var item in availableMovementsForFoxesGB.Controls)
             {
                 CheckBox ch = item as CheckBox;
                 if (ch is null) continue;
@@ -84,7 +84,7 @@ namespace WinForms
                 ch.Checked = false;
             }
             //
-            foreach (var item in availableMovementsForTheFoxGB.Controls)
+            foreach (var item in availableMovementsForFoxesGB.Controls)
             {
                 CheckBox ch = item as CheckBox;
                 if (ch is null) continue;
