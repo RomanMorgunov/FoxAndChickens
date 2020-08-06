@@ -26,13 +26,17 @@ namespace BL
             EventHandler<EntitiesPropertiesEventArgs> onChangeEntitiesProperties, EventHandler<WinEventArgs> onWin,
             Dictionary<Direction, bool> eatingRuleForTheFox,
             Dictionary<Direction, bool> availableMovementsForTheFox,
-            Dictionary<Direction, bool> availableMovementsForChickens)
+            Dictionary<Direction, bool> availableMovementsForChickens,
+            Dictionary<Point, EntityType> gameMap)
         {
             this.PlayerCharacter = playerCharacter;
             this.AI_Level = aiLevel;
             this.GameMode = gameMode;
             _fields = new List<Field>(64);
-            _fields.Add(new Field(eatingRuleForTheFox, availableMovementsForTheFox, availableMovementsForChickens));
+            _fields.Add(new Field(eatingRuleForTheFox, 
+                                  availableMovementsForTheFox, 
+                                  availableMovementsForChickens, 
+                                  gameMap));
             OnChangeEntitiesProperties += onChangeEntitiesProperties;
             OnWin += onWin;
 

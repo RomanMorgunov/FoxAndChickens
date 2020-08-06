@@ -60,6 +60,7 @@
             this.leftEatingRuleCB = new System.Windows.Forms.CheckBox();
             this.controlsGB = new System.Windows.Forms.GroupBox();
             this.restoreToDefault = new System.Windows.Forms.Button();
+            this.map = new WinForms.Map();
             this.availableMovementsGB.SuspendLayout();
             this.availableMovementsForChickensGB.SuspendLayout();
             this.availableMovementsForTheFoxGB.SuspendLayout();
@@ -435,7 +436,7 @@
             this.controlsGB.Controls.Add(this.saveBtn);
             this.controlsGB.Controls.Add(this.cancelBtn);
             this.controlsGB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.controlsGB.Location = new System.Drawing.Point(0, 223);
+            this.controlsGB.Location = new System.Drawing.Point(0, 447);
             this.controlsGB.Name = "controlsGB";
             this.controlsGB.Size = new System.Drawing.Size(339, 54);
             this.controlsGB.TabIndex = 2;
@@ -452,11 +453,19 @@
             this.restoreToDefault.UseVisualStyleBackColor = true;
             this.restoreToDefault.Click += new System.EventHandler(this.restoreToDefault_Click);
             // 
+            // map
+            // 
+            this.map.Location = new System.Drawing.Point(57, 230);
+            this.map.Name = "map";
+            this.map.Size = new System.Drawing.Size(217, 216);
+            this.map.TabIndex = 3;
+            // 
             // GameMechanicsSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(339, 277);
+            this.ClientSize = new System.Drawing.Size(339, 501);
+            this.Controls.Add(this.map);
             this.Controls.Add(this.controlsGB);
             this.Controls.Add(this.eatingRuleGB);
             this.Controls.Add(this.availableMovementsGB);
@@ -513,5 +522,6 @@
         private System.Windows.Forms.CheckBox leftEatingRuleCB;
         private System.Windows.Forms.GroupBox controlsGB;
         private System.Windows.Forms.Button restoreToDefault;
+        private Map map;
     }
 }

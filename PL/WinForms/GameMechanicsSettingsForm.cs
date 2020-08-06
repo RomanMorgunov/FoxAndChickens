@@ -13,6 +13,7 @@ namespace WinForms
 {
     public partial class GameMechanicsSettingsForm : Form
     {
+        public Dictionary<Point, EntityType> GameMap { get; private set; }
         public Dictionary<Direction, bool> EatingRuleForTheFox { get; private set; }
         public Dictionary<Direction, bool> AvailableMovementsForTheFox { get; private set; }
         public Dictionary<Direction, bool> AvailableMovementsForChickens { get; private set; }
@@ -58,6 +59,8 @@ namespace WinForms
                 if (ch is null) continue;
                 EatingRuleForTheFox[pairs[ch.Text]] = ch.Checked;
             }
+
+            GameMap = map.GetGameMap();
         }
 
         private void SetDefaultSettings()
@@ -103,11 +106,13 @@ namespace WinForms
         private void cancelBtn_Click(object sender, EventArgs e)
         {
             SetDefaultSettings();
+            map.SetDefaultSettings();
         }
 
         private void restoreToDefault_Click(object sender, EventArgs e)
         {
             SetDefaultSettings();
+            map.SetDefaultSettings();
         }
 
         private void GameMechanicsSettingsForm_FormClosing(object sender, FormClosingEventArgs e)
