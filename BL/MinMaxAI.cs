@@ -9,12 +9,31 @@ namespace BL
     {
         private const int MIN_EVALUATION_VALUE = 0;
         private const int MAX_EVALUATION_VALUE = int.MaxValue - 1;
-        private Point[] _aiMoves;
 
-        internal MinMaxAI(Character playerCharacter, AI_level aiLevel)
+        private Point[] _aiMoves;
+        private int _recursiveLevelLimit;
+        private readonly Evaluation _evaluation;
+
+        internal MinMaxAI(Character playerCharacter, AI_level aiLevel, Evaluation evaluation)
             : base(playerCharacter, aiLevel)
         {
             _aiMoves = new Point[2];
+            _evaluation = evaluation;
+            _recursiveLevelLimit = GetRecursiveLevelLimit(_playerCharacter, _aiLevel);
+        }
+
+        private int GetRecursiveLevelLimit(Character playerCharacter, AI_level aiLevel)
+        {
+            if (playerCharacter == Character.Chicken && aiLevel == AI_level.Low)
+                return 3;
+            if (playerCharacter == Character.Fox && aiLevel == AI_level.Low)
+                return 2;
+            if (playerCharacter == Character.Chicken && aiLevel == AI_level.Medium)
+                return 5;
+            if (playerCharacter == Character.Fox && aiLevel == AI_level.Medium)
+                return 4;
+
+            throw new ArgumentException();
         }
 
         protected internal override Point[] RunAI(Field field)
@@ -25,12 +44,8 @@ namespace BL
 
         private int RunMinMax(Field initialField, int recursiveLevel, int alpha, int beta)
         {
-            //if the AI plays as a fox then coefficient = 1
-            int coefficient = this._playerCharacter == Character.Chicken ? 1 : 0;
-
             //if the last level of the tree or game over
-            if ((recursiveLevel >= ((int)_aiLevel) * 2 + coefficient) ||
-                initialField.GameOver)
+            if ((recursiveLevel >= _recursiveLevelLimit) || initialField.GameOver)
                 return GetHeuristicEvaluation(initialField);
 
             //if the fox is move now, then we give it the maximum value
@@ -104,35 +119,24 @@ namespace BL
                 }
             }
 
-            int evaluation = 0;
-
-            evaluation += 10 * field.GetChickensCount();
-            for (int y = 2; y < 6; y++)
+            int score = 0;
+            score += _evaluation.EvaluationForOneLiveChicken * field.GetChickensCount();
+            foreach (var item in _evaluation.EvaluationMap)
             {
-                for (int x = 0; x < 7; x++)
+                switch (field.GetEntityType(item.Key))
                 {
-                    if (y == 5 && (x != 2 && x != 3 && x != 4)) 
-                        continue;
-
-                    //winning position
-                    if (y == 2 && (x == 2 || x == 3 || x == 4))
-                        continue;
-
-                    if (field.GetEntityType(new Point(x, y)) == EntityType.Chicken)
-                        evaluation += 6 - y;
+                    case EntityType.Chicken:
+                        score += item.Value;
+                        break;
+                    case EntityType.Fox:
+                        if (field.GetFoxesCount() > 1 && _evaluation.EvaluationForBlockedOneFox != 0)
+                            if (!field.IsMovable(item.Key, Character.Fox))
+                                score += _evaluation.EvaluationForBlockedOneFox;
+                        break;
                 }
             }
 
-            for (int y = 0; y < 3; y++)
-            {
-                for (int x = 2; x < 5; x++)
-                {
-                    if (field.GetEntityType(new Point(x, y)) == EntityType.Chicken)
-                        evaluation += 7 - y;
-                }
-            }
-
-            return evaluation;
+            return score;
         }
     }
 }

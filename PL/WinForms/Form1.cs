@@ -72,7 +72,7 @@ namespace WinForms
                 _settingsForm.EatingRuleForTheFox, 
                 _settingsForm.AvailableMovementsForTheFox, 
                 _settingsForm.AvailableMovementsForChickens,
-                _settingsForm.GameMap);
+                _settingsForm.GameMap, _settingsForm.Evaluation);
             GameFieldTLP.Enabled = true;
         }
 

@@ -17,10 +17,9 @@ namespace BL
         protected internal abstract Point[] RunAI(Field initialField);
     }
 
-    //the value of an enumeration element is the level of recursion for MinMax algorithm
     public enum AI_level
     {
-        Low = 1,
-        Medium = 2
+        Low,
+        Medium
     }
 }

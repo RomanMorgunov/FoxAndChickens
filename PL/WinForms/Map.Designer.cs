@@ -120,7 +120,7 @@
             this.GameFieldTLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.GameFieldTLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.GameFieldTLP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.GameFieldTLP.Size = new System.Drawing.Size(217, 216);
+            this.GameFieldTLP.Size = new System.Drawing.Size(217, 217);
             this.GameFieldTLP.TabIndex = 6;
             this.GameFieldTLP.Tag = "";
             // 
@@ -640,7 +640,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.GameFieldTLP);
             this.Name = "Map";
-            this.Size = new System.Drawing.Size(217, 216);
+            this.Size = new System.Drawing.Size(217, 217);
             this.GameFieldTLP.ResumeLayout(false);
             this.ResumeLayout(false);
 

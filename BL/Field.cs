@@ -417,6 +417,16 @@ namespace BL
             return _entities.Where(p => p.Value.IsMovable == true).First().Value.EntityType;
         }
 
+        internal bool IsMovable(Point coordinates, Character character)
+        {
+            AllWays.Clear();
+            Entity entity = _entities[coordinates];
+            FindAllWaysToEat(entity);
+            FindWaysOfMovementForOneCharacter(entity, character);
+            UpdateIsMovableProperty(true, coordinates);
+            return entity.IsMovable;
+        }
+
         internal EntityType GetEntityType(Point coordinates)
         {
             return _entities[coordinates].EntityType;

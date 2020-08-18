@@ -13,6 +13,7 @@ namespace WinForms
 {
     public partial class GameMechanicsSettingsForm : Form
     {
+        public Evaluation Evaluation { get; private set; }
         public Dictionary<Point, EntityType> GameMap { get; private set; }
         public Dictionary<Direction, bool> EatingRuleForTheFox { get; private set; }
         public Dictionary<Direction, bool> AvailableMovementsForTheFox { get; private set; }
@@ -61,9 +62,18 @@ namespace WinForms
             }
 
             GameMap = map.GetGameMap();
+            Evaluation = new Evaluation(Convert.ToInt32(EvaluationForBlockedOneFoxNUD.Value),
+                                                   Convert.ToInt32(evaluationForOneLiveChickenNUD.Value), 
+                                                   evaluationMap.GetEvaluationMap());
+        }
+        private void SetDefaultSettings()
+        {
+            SetDefaultSettingsForCheckBoxes();
+            map.SetDefaultSettings();
+            evaluationMap.SetDefaultSettings();
         }
 
-        private void SetDefaultSettings()
+        private void SetDefaultSettingsForCheckBoxes()
         {
             foreach (var item in availableMovementsForFoxesGB.Controls)
             {
@@ -83,36 +93,37 @@ namespace WinForms
                 if (ch is null) continue;
                 ch.Checked = false;
             }
-            //
+            
             foreach (var item in availableMovementsForFoxesGB.Controls)
             {
                 CheckBox ch = item as CheckBox;
                 if (ch is null) continue;
                 ch.Checked = true;
             }
-            //
+            
             leftAvailableMovementsChickensCB.Checked = true;
             rightAvailableMovementsChickensCB.Checked = true;
             topLeftAvailableMovementsChickensCB.Checked = true;
             topRightAvailableMovementsChickensCB.Checked = true;
             topAvailableMovementsChickensCB.Checked = true;
-            //
+            
             leftEatingRuleCB.Checked = true;
             rightEatingRuleCB.Checked = true;
             topEatingRuleCB.Checked = true;
             bottomEatingRuleCB.Checked = true;
+            //Evaluations
+            evaluationForOneLiveChickenNUD.Value = 10;
+            EvaluationForBlockedOneFoxNUD.Value = 0;
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
-            SetDefaultSettings();
-            map.SetDefaultSettings();
+            SetDefaultSettings();            
         }
 
         private void restoreToDefault_Click(object sender, EventArgs e)
         {
             SetDefaultSettings();
-            map.SetDefaultSettings();
         }
 
         private void GameMechanicsSettingsForm_FormClosing(object sender, FormClosingEventArgs e)

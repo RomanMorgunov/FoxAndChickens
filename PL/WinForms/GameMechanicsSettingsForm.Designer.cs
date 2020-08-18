@@ -61,18 +61,35 @@
             this.controlsGB = new System.Windows.Forms.GroupBox();
             this.restoreToDefault = new System.Windows.Forms.Button();
             this.map = new WinForms.Map();
+            this.mechanicsGB = new System.Windows.Forms.GroupBox();
+            this.heuristicEvaluationGB = new System.Windows.Forms.GroupBox();
+            this.evaluationMap = new WinForms.EvaluationMap();
+            this.evaluationForOneLiveChickenNUD = new System.Windows.Forms.NumericUpDown();
+            this.gameMapGB = new System.Windows.Forms.GroupBox();
+            this.evaluationMapGB = new System.Windows.Forms.GroupBox();
+            this.otherEvaluationsGB = new System.Windows.Forms.GroupBox();
+            this.evaluationForOneLiveChickenLbl = new System.Windows.Forms.Label();
+            this.EvaluationForBlockedOneFoxLbl = new System.Windows.Forms.Label();
+            this.EvaluationForBlockedOneFoxNUD = new System.Windows.Forms.NumericUpDown();
             this.availableMovementsGB.SuspendLayout();
             this.availableMovementsForChickensGB.SuspendLayout();
             this.availableMovementsForFoxesGB.SuspendLayout();
             this.eatingRuleGB.SuspendLayout();
             this.controlsGB.SuspendLayout();
+            this.mechanicsGB.SuspendLayout();
+            this.heuristicEvaluationGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.evaluationForOneLiveChickenNUD)).BeginInit();
+            this.gameMapGB.SuspendLayout();
+            this.evaluationMapGB.SuspendLayout();
+            this.otherEvaluationsGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EvaluationForBlockedOneFoxNUD)).BeginInit();
             this.SuspendLayout();
             // 
             // availableMovementsGB
             // 
             this.availableMovementsGB.Controls.Add(this.availableMovementsForChickensGB);
             this.availableMovementsGB.Controls.Add(this.availableMovementsForFoxesGB);
-            this.availableMovementsGB.Location = new System.Drawing.Point(0, 0);
+            this.availableMovementsGB.Location = new System.Drawing.Point(3, 257);
             this.availableMovementsGB.Name = "availableMovementsGB";
             this.availableMovementsGB.Size = new System.Drawing.Size(207, 224);
             this.availableMovementsGB.TabIndex = 0;
@@ -305,20 +322,20 @@
             // 
             this.saveBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.saveBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.saveBtn.Location = new System.Drawing.Point(12, 14);
+            this.saveBtn.Location = new System.Drawing.Point(6, 12);
             this.saveBtn.Name = "saveBtn";
-            this.saveBtn.Size = new System.Drawing.Size(91, 34);
+            this.saveBtn.Size = new System.Drawing.Size(219, 34);
             this.saveBtn.TabIndex = 0;
             this.saveBtn.Text = "Save";
             this.saveBtn.UseVisualStyleBackColor = true;
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cancelBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelBtn.Location = new System.Drawing.Point(214, 14);
+            this.cancelBtn.Location = new System.Drawing.Point(456, 12);
             this.cancelBtn.Name = "cancelBtn";
-            this.cancelBtn.Size = new System.Drawing.Size(113, 34);
+            this.cancelBtn.Size = new System.Drawing.Size(219, 34);
             this.cancelBtn.TabIndex = 1;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
@@ -335,7 +352,7 @@
             this.eatingRuleGB.Controls.Add(this.topEatingRuleCB);
             this.eatingRuleGB.Controls.Add(this.bottomEatingRuleCB);
             this.eatingRuleGB.Controls.Add(this.leftEatingRuleCB);
-            this.eatingRuleGB.Location = new System.Drawing.Point(214, 0);
+            this.eatingRuleGB.Location = new System.Drawing.Point(213, 257);
             this.eatingRuleGB.Name = "eatingRuleGB";
             this.eatingRuleGB.Size = new System.Drawing.Size(122, 205);
             this.eatingRuleGB.TabIndex = 1;
@@ -436,18 +453,19 @@
             this.controlsGB.Controls.Add(this.saveBtn);
             this.controlsGB.Controls.Add(this.cancelBtn);
             this.controlsGB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.controlsGB.Location = new System.Drawing.Point(0, 447);
+            this.controlsGB.Location = new System.Drawing.Point(0, 479);
             this.controlsGB.Name = "controlsGB";
-            this.controlsGB.Size = new System.Drawing.Size(339, 54);
+            this.controlsGB.Size = new System.Drawing.Size(681, 52);
             this.controlsGB.TabIndex = 2;
             this.controlsGB.TabStop = false;
             // 
             // restoreToDefault
             // 
-            this.restoreToDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.restoreToDefault.Location = new System.Drawing.Point(113, 14);
+            this.restoreToDefault.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.restoreToDefault.Location = new System.Drawing.Point(231, 12);
             this.restoreToDefault.Name = "restoreToDefault";
-            this.restoreToDefault.Size = new System.Drawing.Size(91, 34);
+            this.restoreToDefault.Size = new System.Drawing.Size(219, 34);
             this.restoreToDefault.TabIndex = 2;
             this.restoreToDefault.Text = "Restore to default";
             this.restoreToDefault.UseVisualStyleBackColor = true;
@@ -455,24 +473,128 @@
             // 
             // map
             // 
-            this.map.Location = new System.Drawing.Point(57, 230);
+            this.map.Location = new System.Drawing.Point(50, 16);
             this.map.Name = "map";
-            this.map.Size = new System.Drawing.Size(217, 216);
+            this.map.Size = new System.Drawing.Size(217, 217);
             this.map.TabIndex = 3;
+            // 
+            // mechanicsGB
+            // 
+            this.mechanicsGB.Controls.Add(this.gameMapGB);
+            this.mechanicsGB.Controls.Add(this.availableMovementsGB);
+            this.mechanicsGB.Controls.Add(this.eatingRuleGB);
+            this.mechanicsGB.Location = new System.Drawing.Point(1, 0);
+            this.mechanicsGB.Name = "mechanicsGB";
+            this.mechanicsGB.Size = new System.Drawing.Size(338, 484);
+            this.mechanicsGB.TabIndex = 4;
+            this.mechanicsGB.TabStop = false;
+            this.mechanicsGB.Text = "Mechanics";
+            // 
+            // heuristicEvaluationGB
+            // 
+            this.heuristicEvaluationGB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.heuristicEvaluationGB.Controls.Add(this.otherEvaluationsGB);
+            this.heuristicEvaluationGB.Controls.Add(this.evaluationMapGB);
+            this.heuristicEvaluationGB.Location = new System.Drawing.Point(345, 0);
+            this.heuristicEvaluationGB.Name = "heuristicEvaluationGB";
+            this.heuristicEvaluationGB.Size = new System.Drawing.Size(334, 484);
+            this.heuristicEvaluationGB.TabIndex = 5;
+            this.heuristicEvaluationGB.TabStop = false;
+            this.heuristicEvaluationGB.Text = "Heuristic evaluation";
+            // 
+            // evaluationMap
+            // 
+            this.evaluationMap.Location = new System.Drawing.Point(3, 16);
+            this.evaluationMap.Name = "evaluationMap";
+            this.evaluationMap.Size = new System.Drawing.Size(322, 182);
+            this.evaluationMap.TabIndex = 0;
+            // 
+            // evaluationForOneLiveChickenNUD
+            // 
+            this.evaluationForOneLiveChickenNUD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.evaluationForOneLiveChickenNUD.Location = new System.Drawing.Point(261, 19);
+            this.evaluationForOneLiveChickenNUD.Name = "evaluationForOneLiveChickenNUD";
+            this.evaluationForOneLiveChickenNUD.Size = new System.Drawing.Size(60, 20);
+            this.evaluationForOneLiveChickenNUD.TabIndex = 1;
+            this.evaluationForOneLiveChickenNUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.evaluationForOneLiveChickenNUD.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // gameMapGB
+            // 
+            this.gameMapGB.Controls.Add(this.map);
+            this.gameMapGB.Location = new System.Drawing.Point(3, 16);
+            this.gameMapGB.Name = "gameMapGB";
+            this.gameMapGB.Size = new System.Drawing.Size(332, 238);
+            this.gameMapGB.TabIndex = 2;
+            this.gameMapGB.TabStop = false;
+            this.gameMapGB.Text = "Game map";
+            // 
+            // evaluationMapGB
+            // 
+            this.evaluationMapGB.Controls.Add(this.evaluationMap);
+            this.evaluationMapGB.Location = new System.Drawing.Point(3, 16);
+            this.evaluationMapGB.Name = "evaluationMapGB";
+            this.evaluationMapGB.Size = new System.Drawing.Size(328, 203);
+            this.evaluationMapGB.TabIndex = 2;
+            this.evaluationMapGB.TabStop = false;
+            this.evaluationMapGB.Text = "Evaluating the chicken in position";
+            // 
+            // otherEvaluationsGB
+            // 
+            this.otherEvaluationsGB.Controls.Add(this.EvaluationForBlockedOneFoxLbl);
+            this.otherEvaluationsGB.Controls.Add(this.EvaluationForBlockedOneFoxNUD);
+            this.otherEvaluationsGB.Controls.Add(this.evaluationForOneLiveChickenLbl);
+            this.otherEvaluationsGB.Controls.Add(this.evaluationForOneLiveChickenNUD);
+            this.otherEvaluationsGB.Location = new System.Drawing.Point(3, 222);
+            this.otherEvaluationsGB.Name = "otherEvaluationsGB";
+            this.otherEvaluationsGB.Size = new System.Drawing.Size(328, 259);
+            this.otherEvaluationsGB.TabIndex = 3;
+            this.otherEvaluationsGB.TabStop = false;
+            this.otherEvaluationsGB.Text = "Other evaluations";
+            // 
+            // evaluationForOneLiveChickenLbl
+            // 
+            this.evaluationForOneLiveChickenLbl.AutoSize = true;
+            this.evaluationForOneLiveChickenLbl.Location = new System.Drawing.Point(6, 21);
+            this.evaluationForOneLiveChickenLbl.Name = "evaluationForOneLiveChickenLbl";
+            this.evaluationForOneLiveChickenLbl.Size = new System.Drawing.Size(168, 13);
+            this.evaluationForOneLiveChickenLbl.TabIndex = 2;
+            this.evaluationForOneLiveChickenLbl.Text = "Evaluation of the one live chicken";
+            // 
+            // EvaluationForBlockedOneFoxLbl
+            // 
+            this.EvaluationForBlockedOneFoxLbl.AutoSize = true;
+            this.EvaluationForBlockedOneFoxLbl.Location = new System.Drawing.Point(6, 47);
+            this.EvaluationForBlockedOneFoxLbl.Name = "EvaluationForBlockedOneFoxLbl";
+            this.EvaluationForBlockedOneFoxLbl.Size = new System.Drawing.Size(151, 13);
+            this.EvaluationForBlockedOneFoxLbl.TabIndex = 4;
+            this.EvaluationForBlockedOneFoxLbl.Text = "Evaluation for blocked one fox";
+            // 
+            // EvaluationForBlockedOneFoxNUD
+            // 
+            this.EvaluationForBlockedOneFoxNUD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.EvaluationForBlockedOneFoxNUD.Location = new System.Drawing.Point(261, 45);
+            this.EvaluationForBlockedOneFoxNUD.Name = "EvaluationForBlockedOneFoxNUD";
+            this.EvaluationForBlockedOneFoxNUD.Size = new System.Drawing.Size(60, 20);
+            this.EvaluationForBlockedOneFoxNUD.TabIndex = 3;
+            this.EvaluationForBlockedOneFoxNUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // GameMechanicsSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(339, 501);
-            this.Controls.Add(this.map);
+            this.ClientSize = new System.Drawing.Size(681, 531);
+            this.Controls.Add(this.heuristicEvaluationGB);
+            this.Controls.Add(this.mechanicsGB);
             this.Controls.Add(this.controlsGB);
-            this.Controls.Add(this.eatingRuleGB);
-            this.Controls.Add(this.availableMovementsGB);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(355, 540);
+            this.MinimumSize = new System.Drawing.Size(697, 570);
             this.Name = "GameMechanicsSettingsForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -486,6 +608,14 @@
             this.eatingRuleGB.ResumeLayout(false);
             this.eatingRuleGB.PerformLayout();
             this.controlsGB.ResumeLayout(false);
+            this.mechanicsGB.ResumeLayout(false);
+            this.heuristicEvaluationGB.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.evaluationForOneLiveChickenNUD)).EndInit();
+            this.gameMapGB.ResumeLayout(false);
+            this.evaluationMapGB.ResumeLayout(false);
+            this.otherEvaluationsGB.ResumeLayout(false);
+            this.otherEvaluationsGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EvaluationForBlockedOneFoxNUD)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -525,5 +655,15 @@
         private System.Windows.Forms.GroupBox controlsGB;
         private System.Windows.Forms.Button restoreToDefault;
         private Map map;
+        private System.Windows.Forms.GroupBox mechanicsGB;
+        private System.Windows.Forms.GroupBox heuristicEvaluationGB;
+        private EvaluationMap evaluationMap;
+        private System.Windows.Forms.NumericUpDown evaluationForOneLiveChickenNUD;
+        private System.Windows.Forms.GroupBox gameMapGB;
+        private System.Windows.Forms.GroupBox evaluationMapGB;
+        private System.Windows.Forms.GroupBox otherEvaluationsGB;
+        private System.Windows.Forms.Label evaluationForOneLiveChickenLbl;
+        private System.Windows.Forms.Label EvaluationForBlockedOneFoxLbl;
+        private System.Windows.Forms.NumericUpDown EvaluationForBlockedOneFoxNUD;
     }
 }

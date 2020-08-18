@@ -27,16 +27,13 @@ namespace BL
             Dictionary<Direction, bool> eatingRuleForTheFox,
             Dictionary<Direction, bool> availableMovementsForTheFox,
             Dictionary<Direction, bool> availableMovementsForChickens,
-            Dictionary<Point, EntityType> gameMap)
+            Dictionary<Point, EntityType> gameMap, Evaluation evaluation)
         {
             this.PlayerCharacter = playerCharacter;
             this.AI_Level = aiLevel;
             this.GameMode = gameMode;
             _fields = new List<Field>(64);
-            _fields.Add(new Field(eatingRuleForTheFox, 
-                                  availableMovementsForTheFox, 
-                                  availableMovementsForChickens, 
-                                  gameMap));
+            _fields.Add(new Field(eatingRuleForTheFox, availableMovementsForTheFox, availableMovementsForChickens, gameMap));
             OnChangeEntitiesProperties += onChangeEntitiesProperties;
             OnWin += onWin;
 
@@ -48,7 +45,7 @@ namespace BL
             {
                 if (gameMode == GameMode.PlayerVsAI)
                 {
-                    _ai = new MinMaxAI(this.PlayerCharacter, this.AI_Level);
+                    _ai = new MinMaxAI(this.PlayerCharacter, this.AI_Level, evaluation);
                     if (this.PlayerCharacter == Character.Fox)
                     {
                         MovingForAI();
