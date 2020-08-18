@@ -26,11 +26,11 @@ namespace WinForms
             }
         }
 
-        private PlayerCharacter PlayerCharacter
+        private Character PlayerCharacter
         {
             get
             {
-                return this.chickenTSMI.Checked ? PlayerCharacter.Chicken : PlayerCharacter.Fox;
+                return this.chickenTSMI.Checked ? Character.Chicken : Character.Fox;
             }
         }
 

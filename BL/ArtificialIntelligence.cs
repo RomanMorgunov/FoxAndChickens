@@ -5,10 +5,10 @@ namespace BL
 {
     internal abstract class ArtificialIntelligence
     {
-        protected PlayerCharacter _playerCharacter;
+        protected Character _playerCharacter;
         protected AI_level _aiLevel;
 
-        protected internal ArtificialIntelligence(PlayerCharacter playerCharacter, AI_level aiLevel)
+        protected internal ArtificialIntelligence(Character playerCharacter, AI_level aiLevel)
         {
             this._playerCharacter = playerCharacter;
             this._aiLevel = aiLevel;

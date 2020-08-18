@@ -10,19 +10,19 @@ namespace BL
 {
     sealed public class Game
     {
-        private List<Field> _fields;
-        private ArtificialIntelligence _ai;
+        private readonly List<Field> _fields;
+        private readonly ArtificialIntelligence _ai;
 
         public AI_level AI_Level { get; private set; }
         public GameMode GameMode { get; private set; }
-        public PlayerCharacter PlayerCharacter { get; private set; }
+        public Character PlayerCharacter { get; private set; }
 
         private Field LastField => _fields[_fields.Count - 1];
 
         public event EventHandler<WinEventArgs> OnWin;
         public event EventHandler<EntitiesPropertiesEventArgs> OnChangeEntitiesProperties;
 
-        public Game(PlayerCharacter playerCharacter, AI_level aiLevel, GameMode gameMode, 
+        public Game(Character playerCharacter, AI_level aiLevel, GameMode gameMode, 
             EventHandler<EntitiesPropertiesEventArgs> onChangeEntitiesProperties, EventHandler<WinEventArgs> onWin,
             Dictionary<Direction, bool> eatingRuleForTheFox,
             Dictionary<Direction, bool> availableMovementsForTheFox,
@@ -49,7 +49,7 @@ namespace BL
                 if (gameMode == GameMode.PlayerVsAI)
                 {
                     _ai = new MinMaxAI(this.PlayerCharacter, this.AI_Level);
-                    if (this.PlayerCharacter == PlayerCharacter.Fox)
+                    if (this.PlayerCharacter == Character.Fox)
                     {
                         MovingForAI();
                     }
@@ -84,7 +84,7 @@ namespace BL
             }
 
             //Moving
-            LastField.Move(entityCoordinates);
+            LastField.Move(ref entityCoordinates);
 
             if (this.GameMode == GameMode.PlayerVsAI && movingCharacterType == EntityType.EmptyCell && 
                 !LastField.GameOver)
@@ -106,8 +106,8 @@ namespace BL
             Point[] moves = _ai.RunAI(this.LastField.Clone());
 
             //Moving
-            LastField.Move(moves[0]);
-            LastField.Move(moves[1]);
+            LastField.Move(ref moves[0]);
+            LastField.Move(ref moves[1]);
         }
 
         public void CancelMove()
@@ -126,7 +126,7 @@ namespace BL
         PlayerVsAI
     }
 
-    public enum PlayerCharacter
+    public enum Character
     {
         Fox,
         Chicken

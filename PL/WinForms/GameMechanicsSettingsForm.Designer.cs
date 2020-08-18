@@ -469,10 +469,12 @@
             this.Controls.Add(this.controlsGB);
             this.Controls.Add(this.eatingRuleGB);
             this.Controls.Add(this.availableMovementsGB);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(355, 316);
+            this.MinimumSize = new System.Drawing.Size(355, 540);
             this.Name = "GameMechanicsSettingsForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game mechanics settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameMechanicsSettingsForm_FormClosing);

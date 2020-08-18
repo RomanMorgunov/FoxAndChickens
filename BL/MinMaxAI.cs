@@ -11,7 +11,7 @@ namespace BL
         private const int MAX_EVALUATION_VALUE = int.MaxValue - 1;
         private Point[] _aiMoves;
 
-        internal MinMaxAI(PlayerCharacter playerCharacter, AI_level aiLevel)
+        internal MinMaxAI(Character playerCharacter, AI_level aiLevel)
             : base(playerCharacter, aiLevel)
         {
             _aiMoves = new Point[2];
@@ -26,7 +26,7 @@ namespace BL
         private int RunMinMax(Field initialField, int recursiveLevel, int alpha, int beta)
         {
             //if the AI plays as a fox then coefficient = 1
-            int coefficient = this._playerCharacter == PlayerCharacter.Chicken ? 1 : 0;
+            int coefficient = this._playerCharacter == Character.Chicken ? 1 : 0;
 
             //if the last level of the tree or game over
             if ((recursiveLevel >= ((int)_aiLevel) * 2 + coefficient) ||
@@ -34,7 +34,7 @@ namespace BL
                 return GetHeuristicEvaluation(initialField);
 
             //if the fox is move now, then we give it the maximum value
-            int bestEvaluation = initialField.LastCharacterType == PlayerCharacter.Chicken ?
+            int bestEvaluation = initialField.LastCharacterType == Character.Chicken ?
                 MAX_EVALUATION_VALUE : MIN_EVALUATION_VALUE;
 
             Point[] bestMove = new Point[2];
@@ -44,26 +44,28 @@ namespace BL
             {
                 //to move
                 Field newField = initialField.Clone();
-                newField.Move(item.Keys.First());
-                newField.Move(item.Keys.Last());
+                Point cell1 = item.Keys.First();
+                Point cell2 = item.Keys.Last();
+                newField.Move(ref cell1);
+                newField.Move(ref cell2);
 
                 //evaluate the move we have chosen
                 int currentEvaluation = RunMinMax(newField, recursiveLevel + 1, alpha, beta);
 
                 //if it is better than everyone that was before this - remember that it is the best
                 //foxes minimize evaluation, chicken - maximize
-                if (currentEvaluation >= bestEvaluation && initialField.LastCharacterType == PlayerCharacter.Fox ||    //for chicken
-                    currentEvaluation < bestEvaluation && initialField.LastCharacterType == PlayerCharacter.Chicken || //for fox
+                if (currentEvaluation >= bestEvaluation && initialField.LastCharacterType == Character.Fox ||    //for chicken
+                    currentEvaluation < bestEvaluation && initialField.LastCharacterType == Character.Chicken || //for fox
                     bestMove[0].X == 0 && bestMove[0].Y == 0 || bestMove[1].X == 0 && bestMove[1].Y == 0) //if there is nowhere to move
                 {
                     bestEvaluation = currentEvaluation;
-                    bestMove[0] = item.Keys.First();
-                    bestMove[1] = item.Keys.Last();
+                    bestMove[0] = cell1;
+                    bestMove[1] = cell2;
                 }
 
                 //alpha-beta pruning
                 //if the fox is move now
-                if (initialField.LastCharacterType == PlayerCharacter.Chicken)
+                if (initialField.LastCharacterType == Character.Chicken)
                 {
                     beta = Math.Min(beta, currentEvaluation);
                 }
@@ -92,7 +94,7 @@ namespace BL
             if (field.GameOver)
             {
                 //if the chickens won
-                if (field.LastCharacterType == PlayerCharacter.Chicken)
+                if (field.LastCharacterType == Character.Chicken)
                 {
                     return MAX_EVALUATION_VALUE;
                 }

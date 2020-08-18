@@ -9,12 +9,12 @@ namespace BL
 {
     public class WinEventArgs : EventArgs
     {
-        public WinEventArgs(PlayerCharacter playerCharacter)
+        public WinEventArgs(Character playerCharacter)
         {
             this.Winner = playerCharacter;
         }
 
-        public PlayerCharacter Winner { get; protected internal set; }
+        public Character Winner { get; protected internal set; }
     }
 
     public class EntitiesPropertiesEventArgs : EventArgs
